@@ -1,0 +1,124 @@
+body {
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #525252;
+  background: linear-gradient(135deg, #252525 0%, #61616b 100%);
+}
+
+.register {
+  position: absolute;
+  opacity: 1;
+  top: 20px;
+  border: 0px solid #000000;
+  box-shadow: 5px 5px 5px 5px #c0c0c0, 5px 5px 15px 5px #c0c0c0, -5px -5px 15px 5px #c0c0c0;
+  width: 270px;
+  height: 350px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  padding: 60px 40px 40px 40px;
+  background: #2f2f2f;
+}
+
+.register .disclaimer {
+  color: #a1a1a1;
+  position: absolute;
+  bottom: 20px;
+  left: 35px;
+  width: 250px;
+  font-size: 10px;
+}
+.register_title {
+  color: #a1a1a1;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 23px;
+}
+
+.register_arrow img{
+  position: absolute;
+  left: 18px;
+  top: 40px;
+  opacity: 0.8;
+  width: 15%;
+  height: auto;
+  cursor: pointer;
+}
+
+.register_fields {
+  height: 208px;
+  position: absolute;
+  left: 0;
+}
+
+.register_fields_button{
+  position: absolute;
+  width: 180px;
+  height: 40px;
+  font-size: 20px;
+  font-family: sans-serif;
+  font-weight:bolder;
+  background: #111111;
+  color: rgb(200, 200, 200);
+  border: 0px solid #1a1a1a;
+  letter-spacing: 3px;
+  border-radius: 2px;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+  margin-top: 7%;
+  margin-left: 25%;
+}
+
+.register_fields_button:hover{
+  background: rgba(0, 0, 0, 0.2);
+  border: 3px solid #000000;
+}
+
+.register_fields input[type=text],
+.register_fields input[type=password],
+.register_fields input[type=email]
+ {
+  color: #afb1be;
+  width: 220px;
+  margin-top: -2px;
+  background: #353535;
+  padding: 10px 65px;
+  border-top: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  border-right: none;
+  border-left: none;
+  outline: none;
+  font-family: Trebuchet, sans-serif;
+}
+ .register_fields input[type=checkbox]
+ {
+  color: #8f8f8f;
+  margin-left: 80px;
+  margin-top: 20px;
+}
+.register_fields_checkage{
+  font-size: 16px;
+  color: #8f8f8f;
+
+}
+
+.register_fields_nombre, .register_fields_surname, .register_fields_password, .register_fields_checkage {
+  position: relative;
+}
+
+.register_fields_register {
+  color: #8f8f8f;
+  float:inline-start;
+  margin-top: 125px;
+  margin-left: 20px;
+  font-size: 14px;
+}
+#link{
+  color: #ffb759;
+}
+
