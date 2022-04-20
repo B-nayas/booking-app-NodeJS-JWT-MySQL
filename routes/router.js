@@ -4,7 +4,7 @@ const authController = require("../controllers/authController");
 
 
 //Rutas de las vistas de la aplicacion
-router.get("/", (req, res) => {
+router.get("/",authController.createTable, (req, res) => {
   res.render("index");
 });
 router.get("/login", (req, res) => {

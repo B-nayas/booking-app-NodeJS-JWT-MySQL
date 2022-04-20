@@ -55,7 +55,6 @@ exports.login = async (req, res) => {
   try {
     const email = req.body.login_email;
     const password = req.body.login_pass;
-
     if (!email || !password) {
       res.render("login", { alert1: 1, alert2: 0, alert3: 0 });
       console.log("Error de entrada de datos en el login. Campos vacíos.");
@@ -185,12 +184,6 @@ exports.change_password = async (req, res) => {
 };
 
 
-
-
-
-
-
-
 exports.logout = (req, res) => {
   res.clearCookie("jwt");
   return res.redirect("/");
@@ -200,3 +193,8 @@ exports.index = (req, res) => {
   return res.redirect("index");
 }
 
+//Creamos la tabla de usuarios la primera vez que visitamos la pagina principal
+exports.createTable = (req, res, next) => {
+  db.query("CREATE TABLE IF NOT EXISTS users (email VARCHAR(100) PRIMARY KEY, name VARCHAR(100), lastname VARCHAR(100), password VARCHAR(100), admin tinyint) ENGINE=INNODB;");
+  return next();
+}
