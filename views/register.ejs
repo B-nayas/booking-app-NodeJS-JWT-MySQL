@@ -53,7 +53,12 @@
       <p>Aplicación web de Alvaro Benayas Aranda</p>
     </div>
   </div>
-  <script src="resources/register.js"></script>
+
+  <script >
+    document.getElementById("back_login").onclick = function () {
+  location.href = "/login";
+};
+  </script>
 
 
   <% if (alert4 == 1) { %>

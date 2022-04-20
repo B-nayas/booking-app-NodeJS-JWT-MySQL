@@ -1,0 +1,94 @@
+body {
+  background: linear-gradient(235deg, #2a323a 0%, #494949 100%);
+  font-family: Arial, Helvetica, sans-serif, monospace;
+  display: flex;
+  flex-direction: column;
+  margin:0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.menu{
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  margin: 0 auto;
+  background: linear-gradient(250deg, #1a2e42 0%, #3b3b3b 100%);
+}
+
+nav{
+  display: flex;
+  text-align: center;
+}
+
+#name_menu{
+  text-align: left;
+  font-family: 'Brush Script MT', monospace;
+  font-size: 40px;
+  color: rgb(206, 206, 206);
+  margin-left: 5%;
+}
+
+.button_menu {
+  position: absolute;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.button_home, .button_booking, .button_settings, .button_exit{
+  font-size: 16px;
+  background: rgba(0, 0, 0, 00);
+  color: rgb(216, 216, 216);
+  border: 0px solid #1a1a1a;
+  letter-spacing: 3px;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+  width: 220px;
+}
+
+.button_home:hover, .button_booking:hover, .button_settings:hover, .button_exit:hover{
+  background: rgba(5, 5, 5, 0.4);
+  color: rgb(200, 200, 200);
+}
+
+
+.settings{
+  position: absolute;
+  color: rgb(142, 142, 142);
+  width: 100%;
+  margin-top: 6%;
+  margin-left: 25%;
+}
+
+.settings div{
+  margin-top: 20px;
+}
+
+.settings button{
+  margin-top: 20px;
+}
+
+.settings input {
+  top: 20px;
+  padding: 10px;
+  border:0;
+  background-color: #b0b0b0;
+  border-radius: 5px;
+}
+.button_change_pass{
+  font-size: 18px;
+  background: rgba(94, 94, 94, 0.511);
+  padding: 7px;
+  border-radius: 5px;
+  color: rgb(216, 216, 216);
+  letter-spacing: 3px;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+  width: 150px;
+  border:#00000000;
+}

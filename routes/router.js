@@ -16,8 +16,8 @@ router.get("/register", (req, res) => {
 router.get("/table-room", authController.isAuthenticated, (req, res) => {
   res.render("table-room");
 });
-router.get("/change-table-room",  authController.isAuthenticated, (req, res) => {
-  res.render("change-table-room");
+router.get("/appointments",  authController.isAuthenticated, (req, res) => {
+  res.render("appointments");
 });
 router.get("/error-register", (req, res) => {
   res.render("error-register");
@@ -25,10 +25,15 @@ router.get("/error-register", (req, res) => {
 router.get("/admin",  authController.isAdmin,  (req, res) => {
   res.render("admin");
 });
+router.get("/settings",  authController.isAuthenticated, (req, res) => {
+  res.render("settings", {alert7:0});
+});
+
 
 //Ruta para los métodos
 router.post('/register', authController.register);
 router.post('/login', authController.login);
+router.post('/settings', authController.change_password);
 router.get('/logout', authController.logout);
 
 

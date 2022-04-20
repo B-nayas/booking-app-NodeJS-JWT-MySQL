@@ -112,7 +112,7 @@ exports.isAuthenticated = async (req, res, next) => {
       );
       db.query("SELECT * FROM users WHERE email = ?", [decoded.email], (error, results) => {
           if (results) {
-            console.log(JSON.stringify(results));
+            // console.log(JSON.stringify(results));
           req.admin = results[0];
           return next();
           } 
@@ -150,10 +150,53 @@ exports.isAdmin = async (req, res, next) => {
   }
 };
 
+//Método para el cambio de contraseña
+exports.change_password = async (req, res) => {
+  try {
+    const decoded = await promisify(jwt.verify)(
+      req.cookies.jwt,
+      process.env.JWT_SECRET
+    );
+    const change_password = req.body.change_pass;
+    let change_passencrypt = await bcryptjs.hash(change_password, 8);
+
+    if (!change_password) {
+      res.render("settings", {alert7:1});
+      console.log(
+        "Debe completar campo de contraseña."
+      );
+    } else {
+      db.query(
+        "UPDATE users SET password = ? WHERE email = ?", [change_passencrypt, decoded.email],
+        (error, results) => {
+          if (error) {
+            res.render("settings",  {alert7:0});
+            console.log("ERROR.");
+          }else{
+            res.render("settings",  {alert7:1});
+            console.log("Contraseña cambiada correctamente.");
+          }
+        }
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
+
+
+
+
 
 exports.logout = (req, res) => {
   res.clearCookie("jwt");
   return res.redirect("/");
 }
 
+exports.index = (req, res) => {
+  return res.redirect("index");
+}
 

@@ -24,20 +24,34 @@ nav{
 .date{
   position: absolute;
   margin-top: 6%;
-  margin-left: 40%;
+  margin-left: 39%;
   color: rgb(190, 190, 190);
-  font-size: 20px;
+  font-size: 16px;
 }
+
+.date_select{
+  color: #000;
+  background-color: rgb(122, 122, 122);
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+
 .button_date{
-font-size: 16px;
-background: rgba(0, 0, 0, 00);
+font-size: 14px;
+background: rgba(0, 0, 0, 0.225);
+padding: 10px;
+border-radius: 5px;
 color: rgb(216, 216, 216);
 letter-spacing: 3px;
 touch-action: manipulation;
 white-space: nowrap;
 cursor: pointer;
-width: 100px;
-border: #1a1a1a;
+width: 160px;
+border: #00000000;
 }
 
 
