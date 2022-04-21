@@ -26,16 +26,14 @@
 
   
     <div class="date">
-      <form action="" method="GET">
         <label for="date">ELIGA UN DÍA :</label>
-        <select class="date_select" name="cars" id="cars">
+        <select class="date_select" name="date" id="date">
           <option value="dia1">01/06/2022</option>
           <option value="dia2">02/06/2022</option>
           <option value="dia3">03/06/2022</option>
           <option value="dia4">04/06/2022</option>
         </select>
         <button class="button_date" type="submit" value="Submit"><span class="text">SELECCIONAR</span></button>
-      </form>
     </div>
 
     <div class="divroom">
@@ -52,7 +50,6 @@
 
         <div class="chef"><img src="/resources/css/images/chef.png" /> </div>
         
-        <form action="/appointments" method="GET">
         <div class="row1">
           <div class="table" id="table1"><img src="/resources/css/images/table4.png" /> </div>
           <div class="table" id="table2"><img src="/resources/css/images/table4.png" /> </div>
@@ -87,11 +84,9 @@
           <div class="table" id="table22"><img src="/resources/css/images/table4.png" /> </div>
         </div>
 
-
       </div>
-      <button class='button_confirm' type='submit' role='button' value='Aceppt'><span
+      <button onclick="handleReserve()" class='button_confirm' type='submit' role='button' value='Aceppt'><span
           class="text">ACEPTAR</span></button>
-      </form>
 
     </div>
 

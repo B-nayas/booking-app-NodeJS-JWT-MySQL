@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
+const mainController = require("../controllers/mainController");
+
 
 
 //Rutas de las vistas de la aplicacion
@@ -29,6 +31,7 @@ router.get("/settings",  authController.isAuthenticated, (req, res) => {
   res.render("settings", {alert7:0});
 });
 
+router.post('/table-room', mainController.createReserve)
 
 //Ruta para los métodos
 router.post('/register', authController.register);
