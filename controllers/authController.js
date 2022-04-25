@@ -44,28 +44,7 @@ exports.register = async (req, res) => {
     }
    );
    db.query(
-    "INSERT INTO `01/06/2022` SET email = ?", [register_email], (error, results) => {
-     if (error) {
-      console.log("Error tabla de reserva de días.");
-     }
-    }
-   );
-   db.query(
-    "INSERT INTO `02/06/2022` SET email = ?", [register_email], (error, results) => {
-     if (error) {
-      console.log("Error tabla de reserva de días.");
-     }
-    }
-   );
-   db.query(
-    "INSERT INTO `03/06/2022` SET email = ?", [register_email], (error, results) => {
-     if (error) {
-      console.log("Error tabla de reserva de días.");
-     }
-    }
-   );
-   db.query(
-    "INSERT INTO `04/06/2022` SET email = ?", [register_email], (error, results) => {
+    "INSERT INTO reservedtables SET email = ?", [register_email], (error, results) => {
      if (error) {
       console.log("Error tabla de reserva de días.");
      }
@@ -236,13 +215,7 @@ exports.createTablesDB = (req, res, next) => {
  db.query(
   "CREATE TABLE IF NOT EXISTS users (email VARCHAR(100) PRIMARY KEY, name VARCHAR(100), lastname VARCHAR(100), password VARCHAR(100), admin tinyint DEFAULT 0) ENGINE=INNODB;"
  );
- db.query("CREATE TABLE IF NOT EXISTS `01/06/2022` (email VARCHAR(100) PRIMARY KEY, day VARCHAR(100), tablesreserved VARCHAR(100)) ENGINE = INNODB;"
- );
- db.query("CREATE TABLE IF NOT EXISTS `02/06/2022` (email VARCHAR(100) PRIMARY KEY, day VARCHAR(100), tablesreserved VARCHAR(100)) ENGINE = INNODB;"
- );
- db.query("CREATE TABLE IF NOT EXISTS `03/06/2022` (email VARCHAR(100) PRIMARY KEY, day VARCHAR(100), tablesreserved VARCHAR(100)) ENGINE = INNODB;"
- );
- db.query("CREATE TABLE IF NOT EXISTS `04/06/2022` (email VARCHAR(100) PRIMARY KEY, day VARCHAR(100), tablesreserved VARCHAR(100)) ENGINE = INNODB;"
+ db.query("CREATE TABLE IF NOT EXISTS reservedtables (email VARCHAR(100), `01/06/2022` VARCHAR(100), `02/06/2022` VARCHAR(100), `03/06/2022` VARCHAR(100), `04/06/2022` VARCHAR(100)) ENGINE = INNODB;"
  );
  return next();
 };

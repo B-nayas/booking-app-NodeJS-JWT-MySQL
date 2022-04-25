@@ -38,42 +38,30 @@
 
     </div>
 
-<!-- 
-  <tr>
-    
-    <td>12/12/12</td>
-    <td>1</td>
-    <td><button class="button_delete" type="submit" role="button" value="Eliminar">Eliminar</button></td>
-    
-  </tr> -->
-
-
-
   </table>
 
     </div>  
 
-
-
-
-
-
-
-
-
-
-
   </div>
-
-
-
-<!-- <script src="resources/appointments.js"></script>  -->
 
 <% if (email) { %>
   <script>
+    if ("<%= day1 %>" !== 'null'){
   document.getElementById("table").insertRow().innerHTML =
-   '<td>12/12/12</td> <td>1</td> <td><button class="button_delete" type="submit" role="button" value="Eliminar">Eliminar</button></td>';
-    console.log("email: <%= email %>");
+   '<td>01/06/22</td> <td><%= day1 %></td> <td><button class="button_delete" type="submit" role="button" value="Eliminar">Eliminar</button></td>';
+    }
+    if ('<%= day2 %>' !== 'null'){
+  document.getElementById("table").insertRow().innerHTML =
+   '<td>02/06/22</td> <td><%= day2 %></td> <td><button class="button_delete" type="submit" role="button" value="Eliminar">Eliminar</button></td>';
+    }
+    if ("<%= day3 %>" !== 'null'){
+  document.getElementById("table").insertRow().innerHTML =
+   '<td>03/06/22</td> <td><%= day3 %></td> <td><button class="button_delete" type="submit" role="button" value="Eliminar">Eliminar</button></td>';
+    }
+    if ("<%= day4 %>" !== 'null'){
+  document.getElementById("table").insertRow().innerHTML =
+   '<td>04/06/22</td> <td><%= day4 %></td> <td><button class="button_delete" type="submit" role="button" value="Eliminar">Eliminar</button></td>';
+    }
   </script>
   <% } %>
 

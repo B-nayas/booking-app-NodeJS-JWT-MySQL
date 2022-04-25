@@ -21,7 +21,7 @@ router.get("/table-room", authController.isAuthenticated, (req, res) => {
   res.render("table-room");
 });
 router.get("/appointments",  authController.isAuthenticated, mainController.listReserve, (req, res) => {
-  res.render("appointments", {email: null, tables: null, date: null});
+  res.render("appointments", {email: null, day1: null, day2: null, day3: null, day4: null});
 });
 router.get("/error-register", (req, res) => {
   res.render("error-register");
