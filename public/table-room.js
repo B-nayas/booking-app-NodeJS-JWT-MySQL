@@ -13,7 +13,9 @@ const checkReserved = () => {
     }
   }
 }
+
 checkReserved()
+
 function handleReserve () {
   const date = document.getElementById('date').value
   const tables = reservedTables
@@ -26,9 +28,10 @@ function handleReserve () {
     method: "POST",
     body: JSON.stringify({
       date: date,
-      tables: tables
+      tables: tables.toString()
     })
 })
-.then(function(res){ console.log(res.body) })
-.catch(function(res){ console.log(res.body) })
+.then(function(res){console.log(res.body)})
+.catch(function(res){console.log(res.body)})
 }
+

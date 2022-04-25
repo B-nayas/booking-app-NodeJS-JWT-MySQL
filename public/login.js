@@ -2,10 +2,6 @@ const jwt = require("jsonwebtoken");
 const db = require("../database/connectiondb");
 const { promisify } = require("util");
 
-//Bcrypt para encriptar la contraseña
-const bcryptjs = require("bcryptjs");
-const { stringify } = require("querystring");
-
 document.getElementById("login_button").onclick = async (req, res, next) => {
     if (req.cookies.jwt) {
       try {

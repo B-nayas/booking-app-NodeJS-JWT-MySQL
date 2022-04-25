@@ -26,33 +26,29 @@
 
     <div class="appointments">
       <h2>MIS RESERVAS</h2>
-  <table class="table">
+  <table id="table">
   <tr>
     <th>FECHA</th>
-    <th>MESA</th>
+    <th>MESAS</th>
     <th> </th>
   </tr>
+
+  <div class="appointmentsList">
+
+
+    </div>
+
+<!-- 
   <tr>
-    <!-- EJEMPLO -->
+    
     <td>12/12/12</td>
     <td>1</td>
     <td><button class="button_delete" type="submit" role="button" value="Eliminar">Eliminar</button></td>
-    <!--  -->
-  </tr>
-  <tr>
-    <!-- EJEMPLO -->
-    <td>12/12/12</td>
-    <td>1</td>
-    <td><button class="button_delete" type="submit" role="button" value="Eliminar">Eliminar</button></td>
-    <!--  -->
-  </tr>
-  <tr>
-    <!-- EJEMPLO -->
-    <td>12/12/12</td>
-    <td>1</td>
-    <td><button class="button_delete" type="submit" role="button" value="Eliminar">Eliminar</button></td>
-    <!--  -->
-  </tr>
+    
+  </tr> -->
+
+
+
   </table>
 
     </div>  
@@ -70,9 +66,16 @@
   </div>
 
 
-  <!--
-<script src="script.js"></script>
--->
+
+<!-- <script src="resources/appointments.js"></script>  -->
+
+<% if (email) { %>
+  <script>
+  document.getElementById("table").insertRow().innerHTML =
+   '<td>12/12/12</td> <td>1</td> <td><button class="button_delete" type="submit" role="button" value="Eliminar">Eliminar</button></td>';
+    console.log("email: <%= email %>");
+  </script>
+  <% } %>
 
 </body>
 

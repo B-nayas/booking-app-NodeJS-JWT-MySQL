@@ -3,10 +3,12 @@ const router = express.Router();
 const authController = require("../controllers/authController");
 const mainController = require("../controllers/mainController");
 
+//Token para saber el usuario
+
 
 
 //Rutas de las vistas de la aplicacion
-router.get("/",authController.createTable, (req, res) => {
+router.get("/",authController.createTablesDB, (req, res) => {
   res.render("index");
 });
 router.get("/login", (req, res) => {
@@ -18,8 +20,8 @@ router.get("/register", (req, res) => {
 router.get("/table-room", authController.isAuthenticated, (req, res) => {
   res.render("table-room");
 });
-router.get("/appointments",  authController.isAuthenticated, (req, res) => {
-  res.render("appointments");
+router.get("/appointments",  authController.isAuthenticated, mainController.listReserve, (req, res) => {
+  res.render("appointments", {email: null, tables: null, date: null});
 });
 router.get("/error-register", (req, res) => {
   res.render("error-register");
@@ -31,7 +33,8 @@ router.get("/settings",  authController.isAuthenticated, (req, res) => {
   res.render("settings", {alert7:0});
 });
 
-router.post('/table-room', mainController.createReserve)
+
+router.post('/table-room', mainController.createReserve);
 
 //Ruta para los métodos
 router.post('/register', authController.register);

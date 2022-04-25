@@ -63,26 +63,26 @@ nav{
   margin-left: 25%;
 }
 
-.table {
+#table {
   position: relative;
   border-collapse: collapse;
   color: rgb(211, 211, 211);
  width: 500px;
 }
 
-.table td, .table th {
+#table td, #table th {
   padding: 8px;
 }
-.table td {
+#table td {
   border-bottom: 1px solid rgb(44, 44, 44);
 }
-.table td:last-of-type {
+#table td:last-of-type {
   text-align: right;
 }
 
-.table tr:nth-child(even){background-color: #323232;}
+#table tr:nth-child(even){background-color: #323232;}
 
-.table th {
+#table th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
