@@ -14,5 +14,6 @@ connection.connect((error) => {
   }
   console.log("Conexión correcta a base de datos");
 });
+
 //exportamos los modulos
 module.exports = connection;
