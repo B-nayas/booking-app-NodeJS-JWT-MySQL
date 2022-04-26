@@ -2,8 +2,7 @@ const db = require("../database/connectiondb");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 
-
-
+//Método para crear las reservas de usuarios
 exports.createReserve = async (req, res) => {
   const email = await promisify(jwt.verify)(
     req.cookies.jwt,
@@ -12,122 +11,75 @@ exports.createReserve = async (req, res) => {
   const reserve = {
     email: email.email,
     tables: req.body.tables,
-    date: req.body.date
-  }
+    date: req.body.date,
+  };
   try {
-      db.query(
-        "UPDATE reservedtables SET ?? = ? WHERE email = ?;", [reserve.date, reserve.tables, reserve.email],
-      );
-
-    res.render('appointments', {email: reserve.email});
-} catch (error) {
-  console.log(error)
+    db.query("UPDATE reservedtables SET ?? = ? WHERE email = ?;", [
+      reserve.date,
+      reserve.tables,
+      reserve.email,
+    ]);
+  } catch (error) {
+    console.log(error);
   }
 };
- 
 
+//Método para listar las reservas que tiene un usuario
 exports.listReserve = async (req, res) => {
   try {
     const decoded = await promisify(jwt.verify)(
       req.cookies.jwt,
       process.env.JWT_SECRET
     );
-
-    // var someVar = [];
-    // function setValue(value) {
-    //   someVar = value;
-    //   console.log(someVar);
-    // }
-   
     db.query(
-        "SELECT `01/06/2022` FROM reservedtables WHERE email = ?",
-        [decoded.email],
-        (error, results) => {
-          var aresults = JSON.stringify(results[0]);
-          var [aresults1, aresults2] = aresults.split(':');
-          aresults2 = aresults2.replace(/['"}]+/g, '');
-          db.query(
-        "SELECT `02/06/2022` FROM reservedtables WHERE email = ?",
-        [decoded.email],
-        (error, results) => {
-          var bresults = JSON.stringify(results[0]);
-          var [bresults1, bresults2] = bresults.split(':');
-          bresults2 = bresults2.replace(/['"}]+/g, '');
-          db.query(
-            "SELECT `03/06/2022` FROM reservedtables WHERE email = ?",
-            [decoded.email],
-            (error, results) => {
-              var cresults = JSON.stringify(results[0]);
-              var [cresults1, cresults2] = cresults.split(':');
-              cresults2 = cresults2.replace(/['"}]+/g, '');
-              db.query(
-                "SELECT `04/06/2022` FROM reservedtables WHERE email = ?",
-                [decoded.email],
-                (error, results) => {
-                  var dresults = JSON.stringify(results[0]);
-                  var [dresults1, dresults2] = dresults.split(':');
-                  dresults2 = dresults2.replace(/['"}]+/g, '');
-                  res.render("appointments" , {email: decoded.email, 
-                    day1: aresults2, day2: bresults2, day3: cresults2, day4: dresults2});
-
-
-
-                })
-
-
-
-            })
-
-
-
-        })
-          // const result = JSON.parse(JSON.stringify(results));
-          // var {'01/06/2022': a, '02/06/2022': b, '03/06/2022': c, '04/06/2022': d} = result;
-          // console.log(a);
-          // result.forEach((x) => {
-          // console.log(x);
-          //           });
-
-          
-          // const reserved = JSON.stringify(results[0]);
-          // console.log(reserved);
-
-          // var [a, b, c, d] = reserved.split('","');
-          // console.log(a);
-          // console.log(b);
-          // console.log(c);
-          // console.log(d);
-
-
-          // res.render("appointments" , {email: decoded.email, reserved: reserved});
-        })
-
+      "SELECT day010622 FROM reservedtables WHERE email = ?",
+      [decoded.email],
+      (error, results) => {
+        var aresults = results[0].day010622;
+        db.query(
+          "SELECT day020622 FROM reservedtables WHERE email = ?",
+          [decoded.email],
+          (error, results) => {
+            var bresults = results[0].day020622;
+            db.query(
+              "SELECT day030622 FROM reservedtables WHERE email = ?",
+              [decoded.email],
+              (error, results) => {
+                var cresults = results[0].day030622;
+                db.query(
+                  "SELECT day040622 FROM reservedtables WHERE email = ?",
+                  [decoded.email],
+                  (error, results) => {
+                    var dresults = results[0].day040622;
+                    res.render("appointments", {
+                      email: decoded.email,
+                      day1: aresults,
+                      day2: bresults,
+                      day3: cresults,
+                      day4: dresults,
+                    });
+                  }
+                );
+              }
+            );
+          }
+        );
+      }
+    );
   } catch (error) {
-    console.log('Error tabla de reservas');
+    console.log("Error tabla de reservas");
   }
 };
 
-
-
-
-// exports.createReserve = async (req, res) => {
-//   const email = await promisify(jwt.verify)(
-//     req.cookies.jwt,
-//     process.env.JWT_SECRET
-//   );
-//   const reserve = {
-//     email: email.email,
-//     tables: req.body.tables,
-//     date: req.body.date
-//   }
-//   try {
-//       db.query(
-//         "UPDATE ?? SET tablesreserved = ?, day = ? WHERE email = ?;", [reserve.date, reserve.tables, reserve.date, reserve.email],
-//       )
-//     res.render('appointments', {email: reserve.email});
-// } catch (error) {
-//   console.log(error)
-//   }
-// };
-
- 
+//Método para listar las reservas totales vistas por el administrador
+exports.listReserveAll = async (req, res) => {
+  try {
+    db.query("SELECT * FROM reservedtables", (error, results) => {
+      res.render("admin", {
+        results: results,
+      });
+    });
+  } catch (error) {
+    console.log("Error tabla de reservas");
+  }
+};

@@ -12,7 +12,8 @@ body {
   opacity: 1;
   top: 20px;
   border: 0px solid #000000;
-  box-shadow: 5px 5px 5px 5px #c0c0c0, 5px 5px 15px 5px #c0c0c0, -5px -5px 15px 5px #c0c0c0;
+  box-shadow: 5px 5px 5px 5px #c0c0c0, 5px 5px 15px 5px #c0c0c0,
+    -5px -5px 15px 5px #c0c0c0;
   width: 270px;
   height: 350px;
   left: 0;
@@ -39,7 +40,7 @@ body {
   font-size: 23px;
 }
 
-.register_arrow img{
+.register_arrow img {
   position: absolute;
   left: 18px;
   top: 40px;
@@ -55,13 +56,13 @@ body {
   left: 0;
 }
 
-.register_fields_button{
+.register_fields_button {
   position: absolute;
   width: 180px;
   height: 40px;
   font-size: 20px;
   font-family: sans-serif;
-  font-weight:bolder;
+  font-weight: bolder;
   background: #111111;
   color: rgb(200, 200, 200);
   border: 0px solid #1a1a1a;
@@ -74,15 +75,14 @@ body {
   margin-left: 25%;
 }
 
-.register_fields_button:hover{
+.register_fields_button:hover {
   background: rgba(0, 0, 0, 0.2);
   border: 3px solid #000000;
 }
 
-.register_fields input[type=text],
-.register_fields input[type=password],
-.register_fields input[type=email]
- {
+.register_fields input[type="text"],
+.register_fields input[type="password"],
+.register_fields input[type="email"] {
   color: #afb1be;
   width: 220px;
   margin-top: -2px;
@@ -95,30 +95,30 @@ body {
   outline: none;
   font-family: Trebuchet, sans-serif;
 }
- .register_fields input[type=checkbox]
- {
+.register_fields input[type="checkbox"] {
   color: #8f8f8f;
   margin-left: 80px;
   margin-top: 20px;
 }
-.register_fields_checkage{
+.register_fields_checkage {
   font-size: 16px;
   color: #8f8f8f;
-
 }
 
-.register_fields_nombre, .register_fields_surname, .register_fields_password, .register_fields_checkage {
+.register_fields_nombre,
+.register_fields_surname,
+.register_fields_password,
+.register_fields_checkage {
   position: relative;
 }
 
 .register_fields_register {
   color: #8f8f8f;
-  float:inline-start;
+  float: inline-start;
   margin-top: 125px;
   margin-left: 20px;
   font-size: 14px;
 }
-#link{
+#link {
   color: #ffb759;
 }
-

@@ -1,55 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="/resources/css/settings.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel="stylesheet" href="/resources/css/settings.css" />
-    
-</head>
-
-<body>
-  <div class="all">
-
-    <div class="menu">
-      <a id="name_menu">Show Food</a>
-      <nav class="button_menu">
-        <button class='button_home' type="button" onclick="window.location.href='table-room'"><span class="text">HOME</span></button>
-        <button class='button_booking' type='button' onclick="window.location.href='appointments'"><span class="text">MIS
-            RESERVAS</span></button>
-        <button class='button_settings' type='button' onclick="window.location.href='settings'"><span
-            class="text">CONFIGURACIÓN</span></button>
-            <button type="button" class='button_exit' onclick="window.location.href='logout'"><span class="text">SALIR</span></button>
-      </nav>
-    </div>
-
-    <div class="settings">
-
-      <h2>CAMBIO DE CONTRASEÑA</h2>
-      <div class="new_pass">
-        <a>Nueva contraseña </a>
-        <form action="/settings" method="POST">
-          <div class='change_fields_password'>
-            <input placeholder='Contraseña' type='password' name='change_pass' /> 
-            <span id="alert"></span>
-          </div>
-          <button class="button_change_pass" type="submit" role="button" value="Cambiar">CAMBIAR</button>
-          </form>
-
+  <body>
+    <div class="all">
+      <div class="menu">
+        <a id="name_menu">Show Food</a>
+        <nav class="button_menu">
+          <button
+            class="button_home"
+            type="button"
+            onclick="window.location.href='table-room'"
+          >
+            <span class="text">HOME</span>
+          </button>
+          <button
+            class="button_booking"
+            type="button"
+            onclick="window.location.href='appointments'"
+          >
+            <span class="text">MIS RESERVAS</span>
+          </button>
+          <button
+            class="button_settings"
+            type="button"
+            onclick="window.location.href='settings'"
+          >
+            <span class="text">CONFIGURACIÓN</span>
+          </button>
+          <button
+            type="button"
+            class="button_exit"
+            onclick="window.location.href='logout'"
+          >
+            <span class="text">SALIR</span>
+          </button>
+        </nav>
       </div>
 
-    </div>  
+      <div class="settings">
+        <h2>CAMBIO DE CONTRASEÑA</h2>
+        <div class="new_pass">
+          <a>Nueva contraseña </a>
+          <form action="/settings" method="POST">
+            <div class="change_fields_password">
+              <input
+                placeholder="Contraseña"
+                type="password"
+                name="change_pass"
+              />
+              <span id="alert"></span>
+            </div>
+            <button
+              class="button_change_pass"
+              type="submit"
+              role="button"
+              value="Cambiar"
+            >
+              CAMBIAR
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
 
-  </div>
-
- <% if (alert7 == 1) { %>
-  <script>
-    var span = document.getElementById('alert');
-    span.innerHTML = `<span style="color: rgb(220, 20, 10); font-size: 18px">  Contraseña cambiada!</span>`;
-  </script>
-  <% } %> 
-    
-</body>
-
+    <% if (alert7 == 1) { %>
+    <script>
+      var span = document.getElementById("alert");
+      span.innerHTML = `<span style="color: rgb(220, 20, 10); font-size: 18px">  Contraseña cambiada!</span>`;
+    </script>
+    <% } %>
+  </body>
 </html>

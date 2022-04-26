@@ -3,12 +3,8 @@ const router = express.Router();
 const authController = require("../controllers/authController");
 const mainController = require("../controllers/mainController");
 
-//Token para saber el usuario
-
-
-
 //Rutas de las vistas de la aplicacion
-router.get("/",authController.createTablesDB, (req, res) => {
+router.get("/", authController.createTablesDB , (req, res) => {
   res.render("index");
 });
 router.get("/login", (req, res) => {
@@ -20,28 +16,26 @@ router.get("/register", (req, res) => {
 router.get("/table-room", authController.isAuthenticated, (req, res) => {
   res.render("table-room");
 });
-router.get("/appointments",  authController.isAuthenticated, mainController.listReserve, (req, res) => {
+router.get("/appointments", authController.isAuthenticated, mainController.listReserve, (req, res) => {
   res.render("appointments", {email: null, day1: null, day2: null, day3: null, day4: null});
 });
 router.get("/error-register", (req, res) => {
   res.render("error-register");
 });
-router.get("/admin",  authController.isAdmin,  (req, res) => {
-  res.render("admin");
+router.get("/admin",  authController.isAdmin, mainController.listReserveAll,  (req, res) => {
+  res.render("admin", {results: null});
 });
 router.get("/settings",  authController.isAuthenticated, (req, res) => {
   res.render("settings", {alert7:0});
 });
 
-
-router.post('/table-room', mainController.createReserve);
-
-//Ruta para los métodos
+ 
+//Ruta para los métodos de la aplicación
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.post('/settings', authController.change_password);
 router.get('/logout', authController.logout);
-
+router.post("/table-room", mainController.createReserve);
 
 //exportamos los modulos
 module.exports = router;

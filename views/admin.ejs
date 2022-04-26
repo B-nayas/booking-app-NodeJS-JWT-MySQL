@@ -1,34 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="/resources/css/admin.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel="stylesheet" href="/resources/css/admin.css" />
-  <title>Show Food</title>
-</head>
-
-<body>
-  <div class="all">
-
-    <div class="menu">
-      <a id="name_menu">Show Food</a>
-    </div>
-
-      <div class="index">
-        <button type="button" class='button_exit' onclick="window.location.href='logout'"><span class="text">SALIR</span></button>
-
-        <span id="index_text">ADMIN.</span>
-       
+  <body>
+    <div class="all">
+      <div class="menu">
+        <a id="name_menu">Show Food</a>
+        <nav class="button_menu">
+          <button
+            type="button"
+            class="button_exit"
+            onclick="window.location.href='logout'"
+          >
+            <span class="text">SALIR</span>
+          </button>
+        </nav>
       </div>
 
-      
+      <div class="appointments">
+        <h2>RESERVAS DE CLIENTES</h2>
+        <table id="table">
+          <tr>
+            <th>CLIENTE</th>
+            <th>01/02/2022</th>
+            <th>02/02/2022</th>
+            <th>03/02/2022</th>
+            <th>04/02/2022</th>
+          </tr>
+
+          <% results.forEach(function(x){ %>
+          <tr>
+            <td><%= x.email %></td>
+            <td><%= x.day010622 %></td>
+            <td><%= x.day020622 %></td>
+            <td><%= x.day030622 %></td>
+            <td><%= x.day040622 %></td>
+          </tr>
+          <% }); %>
+        </table>
+      </div>
     </div>
 
-  </div>
-
-
-</body>
-
+    <script></script>
+  </body>
 </html>
