@@ -1,80 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel="stylesheet" href="/resources/css/register.css" />
-  <title>Show Food</title>
-</head>
-
-<body>
-
-  <div class='register'>
-    <div class='register_title'>
-      <span>Nuevo cliente</span>
-    </div>
-    <div class='register_arrow'>
-      <img id="back_login" src="/resources/css/images/flecha.png" />
-    </div>
-
-<form action="/register" method="POST">
-
-    <div class='register_fields'>
-
-      <div class='register_fields_email'>
-        <input placeholder='Email' type='email' name='register_user_email'/>
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+      <link rel="stylesheet" href="/resources/css/register.css" />
+      <title>Show Food</title>
+   </head>
+   <body>
+      <div class="all">
+      <div class="menu">
+         <a id="name_menu">Show Food</a>
       </div>
-
-      <div class='register_fields_name'>
-        <input placeholder='Nombre' type='text' name='register_user_name'/>
+      <div class='register'>
+         <div class='register_title'>
+            <span>Nuevo cliente</span>
+         </div>
+         <div class='register_arrow'>
+            <img id="back_login" src="/resources/css/images/flecha.png" />
+         </div>
+         <form action="/register" method="POST" onsubmit="return validateForm()">
+            <div class='register_fields'>
+               <div class='register_fields_email'>
+                  <input placeholder='Email' type='email' name='register_user_email' />
+               </div>
+               <div class='register_fields_name'>
+                  <input placeholder='Nombre' type='text' name='register_user_name' />
+               </div>
+               <div class='register_fields_surname'>
+                  <input placeholder='Apellidos' type='text' name='register_user_lastname' />
+               </div>
+               <div class='register_fields_password'>
+                  <input placeholder='Contraseña' type='password' name='register_user_pass' />
+               </div>
+               <div class='register_fields_checkage'>
+                  <a><input type='checkbox' name='register_agecheck' />Soy mayor de
+                  edad.</a>
+               </div>
+               <button class='register_fields_button' type='submit' role='button' value='Register'><span
+                  class="text">ENVIAR</span></button>
+               <div>
+                  <p id="error-message" class="error-message"></p>
+                  <p id="successful-message" class="successful-message"></p>
+               </div>
+         </form>
+         </div>
+         <div class='disclaimer'>
+            <p>Aplicación web de Alvaro Benayas Aranda</p>
+         </div>
       </div>
-
-      <div class='register_fields_surname'>
-        <input placeholder='Apellidos' type='text' name='register_user_lastname'/>
-      </div>
-
-      <div class='register_fields_password'>
-        <input placeholder='Contraseña' type='password' name='register_user_pass'/>
-      </div>
-    </form>
-
-      <div class='register_fields_checkage'>
-        <a><input type='checkbox' />Soy mayor de edad.</a>
-      </div>
-
-      <button class='register_fields_button' type='submit' role='button' value='Register'><span
-          class="text">ENVIAR</span></button>
-
-    </div>
-
-    <div class='disclaimer'>
-      <p>Aplicación web de Alvaro Benayas Aranda</p>
-    </div>
-  </div>
-
-  <script >
-    document.getElementById("back_login").onclick = function () {
-  location.href = "/login";
-};
-  </script>
-
-
-  <% if (alert4 == 1) { %>
-    <script>
-      var alertBox1 = window.onload=function(){alert('Debe completar todos los campos para registrarse.')};
-
-    </script>
-    <% } %>
-
-    <% if (alert5 == 1) { %>
       <script>
-        var alertBox2 = window.onload=function(){alert('Usuario creado correctamente.')};
-  
+         document.getElementById("back_login").onclick = function () {
+           location.href = "/login";
+         };
+      </script>
+      <% if (alert4==1) { %>
+      <script>
+         document.getElementById("error-message").innerText = "Debe completar todos los campos para registrarse.";
       </script>
       <% } %>
-
-</body>
-
+      <% if (alert5==1) { %>
+      <script>
+         document.getElementById("successful-message").innerHTML = "Usuario creado correctamente.<br>Pincha aquí para iniciar sesión.";
+         document.getElementById("successful-message").addEventListener("click", function () {
+           window.location.href = "/login";
+         });
+      </script>
+      <% } %>
+      <% if (alert6==1) { %>
+      <script>
+         document.getElementById("error-message").innerText = "Debe ser mayor de edad para registrarse.";
+         
+      </script>
+      <% } %>
+      <% if (alert7==1) { %>
+      <script>
+         document.getElementById("error-message").innerText = "El usuario ya existe.";
+      </script>
+      <% } %>
+   </body>
 </html>

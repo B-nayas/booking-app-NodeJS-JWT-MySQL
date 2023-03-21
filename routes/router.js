@@ -11,7 +11,7 @@ router.get("/login", (req, res) => {
   res.render("login", {alert1:0, alert2:0, alert3:0});
 });
 router.get("/register", (req, res) => {
-  res.render("register", {alert4:0, alert5:0});
+  res.render("register", {alert4:0, alert5:0, alert6:0, alert7:0});
 });
 router.get("/table-room", authController.isAuthenticated, (req, res) => {
   res.render("table-room");

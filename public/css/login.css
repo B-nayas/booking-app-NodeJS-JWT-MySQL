@@ -1,10 +1,19 @@
 body {
-  height: 100vh;
+  background: linear-gradient(235deg, #2a323a 0%, #494949 100%);
+  font-family: Arial, Helvetica, sans-serif, monospace;
+  display: flex;
+  flex-direction: column;
   margin: 0;
+  height: 100vh;
   overflow: hidden;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #525252;
-  background: linear-gradient(135deg, #252525 0%, #61616b 100%);
+}
+
+.menu {
+  position: absolute;
+  width: 100%;
+  height: 60px;
+  margin: 0 auto;
+  background: linear-gradient(250deg, #1a2e42 0%, #3b3b3b 100%);
 }
 
 .login {
@@ -28,7 +37,7 @@ body {
 .login .disclaimer {
   color: #a1a1a1;
   position: absolute;
-  bottom: 20px;
+  bottom: 5px;
   left: 35px;
   width: 250px;
   font-size: 10px;
@@ -101,4 +110,12 @@ body {
   width: 220px;
   margin-top: 30%;
   margin-left: 19%;
+}
+
+#name_menu {
+  position: absolute;
+  font-family: "Brush Script MT", monospace;
+  font-size: 40px;
+  color: rgb(206, 206, 206);
+  margin-left: 45%;
 }
