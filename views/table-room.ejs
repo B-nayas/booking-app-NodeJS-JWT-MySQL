@@ -46,21 +46,10 @@
 
       <div class="date">
         <label for="date">ELIGA UN DÍA :</label>
-        <select class="date_select" name="date" id="date">
-          <option value="day010622" name="'01/06/2022'">01/06/2022</option>
-          <option value="day020622" name="'02/06/2022'">02/06/2022</option>
-          <option value="day030622" name="'03/06/2022'">03/06/2022</option>
-          <option value="day040622" name="'04/06/2022'">04/06/2022</option>
-        </select>
-        <button
-          onclick="dateConfirm()"
-          class="button_date"
-          type="submit"
-          value="Submit"
-        >
-          <span class="text">SELECCIONAR</span>
-        </button>
-      </div>
+        <select class="date_select" name="date" id="date" onchange="dateConfirm()"></select>
+    </div>
+   </div>
+
 
       <div class="divroom">
         <div class="tablekey">

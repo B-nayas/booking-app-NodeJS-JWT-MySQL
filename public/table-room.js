@@ -38,7 +38,17 @@ function handleReserve() {
   window.location.href = "/appointments";
 }
 
-//Función para confirmar el cambio de fecha
-function dateConfirm() {
-  alert("Fecha actualizada");
+// Método para la fecha. Obtenemos el select, el día actual y definimos la cantidad de días a añadir
+const select = document.getElementById("date");
+const today = new Date();
+const daysToAdd = 14;
+
+// Iterar 14 días y agregarlos como opciones en el select
+for (let i = 0; i < daysToAdd; i++) {
+  const dateToAdd = new Date(today.getTime() + i * 24 * 60 * 60 * 1000);
+  const option = document.createElement("option");
+  option.value = "day" + dateToAdd.toLocaleDateString("es-ES").replaceAll("/", "");
+  option.textContent = dateToAdd.toLocaleDateString("es-ES");
+  select.appendChild(option);
 }
+

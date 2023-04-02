@@ -5,7 +5,7 @@ const mainController = require("../controllers/mainController");
 
 //Rutas de las vistas de la aplicacion
 router.get("/", authController.createTablesDB , (req, res) => {
-  res.render("index");
+  res.render("login", {alert1:0, alert2:0, alert3:0});
 });
 router.get("/login", (req, res) => {
   res.render("login", {alert1:0, alert2:0, alert3:0});
