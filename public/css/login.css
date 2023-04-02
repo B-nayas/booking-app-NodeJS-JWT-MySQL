@@ -100,7 +100,26 @@ body {
 .login_fields_password {
   position: relative;
 }
+.error-message {
+  color: red;
+  font-size: 16px;
+  position: absolute;
+  bottom: -90px;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
 
+.successful-message {
+  color: rgb(24, 190, 9);
+  font-size: 16px;
+  position: absolute;
+  bottom: -90px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  cursor: pointer;
+}
 #login_button {
   width: 180px;
   margin-top: 10%;

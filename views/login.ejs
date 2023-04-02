@@ -37,6 +37,10 @@
                <button class="login_fields_button" id="register_button" onclick="window.location.href='/register'">
                REGISTRARSE
                </button>
+               <div>
+                  <p id="error-message" class="error-message"></p>
+                  <p id="successful-message" class="successful-message"></p>
+               </div>
             </div>
             <div class="disclaimer">
                <p>Aplicación web de Alvaro Benayas Aranda</p>
@@ -46,16 +50,18 @@
       </div>
       <% if (alert1) { %>
       <script>
-         window.onload = function () {
-           alert("Debe completar los campos para iniciar sesión");
-         };
+         document.getElementById("error-message").innerHTML = "Debe completar todos los campos para iniciar sesión.";
+         document.getElementById("error-message").addEventListener("click", function () {
+           window.location.href = "/login";
+         });
       </script>
       <% } %>
       <% if (alert2) { %>
       <script>
-         window.onload = function () {
-           alert("Usuario/Contraseña incorrecta");
-         };
+         document.getElementById("error-message").innerHTML = "Usuario/Contraseña incorrecta.";
+         document.getElementById("error-message").addEventListener("click", function () {
+           window.location.href = "/login";
+         });
       </script>
       <% } %>
       <% if (alert3) { %>

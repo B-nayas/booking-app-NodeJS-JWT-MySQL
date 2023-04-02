@@ -56,9 +56,9 @@ nav {
 .tablekey {
   position: absolute;
   display: grid;
-  grid-template-columns: 50px 100px 50px 100px;
+  grid-template-columns: 50px 50px 50px 100px 50px 80px;
   background: rgba(0, 0, 0, 0.1);
-  padding: 5px 10px;
+  padding: 5px 10px 5px;
   border-radius: 15px;
   color: rgb(124, 124, 124);
   margin: 0 auto;
@@ -70,7 +70,10 @@ nav {
 }
 .table_key.select img {
   filter: invert(56%) sepia(96%) saturate(448%) hue-rotate(66deg)
-    brightness(101%) contrast(93%);
+    brightness(101%) contrast(93%); 
+}
+.table_key.busy img {
+  filter: brightness(0) invert(30%) sepia(100%) saturate(10000%);
 }
 
 .button_menu {
