@@ -54,6 +54,7 @@ nav {
 }
 
 .tablekey {
+  user-select: none;
   position: absolute;
   display: grid;
   grid-template-columns: 50px 50px 50px 100px 50px 80px;
@@ -65,10 +66,12 @@ nav {
 }
 
 .table_key img {
+  user-select: none;
   height: 50px;
   width: 50px;
 }
 .table_key.select img {
+  user-select: none;
   filter: invert(56%) sepia(96%) saturate(448%) hue-rotate(66deg)
     brightness(101%) contrast(93%); 
 }
@@ -136,9 +139,14 @@ nav {
   cursor: pointer;
 }
 
-.table.selected {
+.table.selected img {
   filter: invert(56%) sepia(96%) saturate(448%) hue-rotate(66deg)
     brightness(101%) contrast(93%);
+}
+
+.table.busy img {
+  filter: brightness(0) invert(30%) sepia(100%) saturate(10000%);
+
 }
 
 .room {

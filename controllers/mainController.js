@@ -1,26 +1,65 @@
 const db = require("../database/connectiondb");
 const jwt = require("jsonwebtoken");
+const { CLIENT_RENEG_WINDOW } = require("tls");
 const { promisify } = require("util");
 
-//Método para crear las reservas de usuarios
+// Método para crear las reservas de usuarios
 exports.createReserve = async (req, res) => {
   const email = await promisify(jwt.verify)(
     req.cookies.jwt,
     process.env.JWT_SECRET
   );
+  const clientIdQuery = "SELECT email FROM clientes WHERE email = ?";
   const reserve = {
-    email: email.email,
-    tables: req.body.tables,
+    clientemail: email,
+    tableIds: req.body.tableIds,
     date: req.body.date,
   };
+  console.log('Reserva: ', reserve);
   try {
-    db.query("UPDATE reservedtables SET ?? = ? WHERE email = ?;", [
-      reserve.date,
-      reserve.tables,
-      reserve.email,
-    ]);
+    // Obtener el ID del cliente que realiza la reserva
+    db.query(clientIdQuery, [email.email], (error, results, fields) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send('Error al obtener el email del cliente');
+      } else if (results.length === 0) {
+        res.status(404).send('Cliente no encontrado');
+      } else {
+        reserve.clientemail = results[0].email;
+        
+        // Cambiar el estado de cada mesa a "ocupada"
+        reserve.tableIds.forEach(tableId => {
+          const queryUpdateTable = `UPDATE mesas SET estado = 'ocupada' WHERE id = ?`;
+          db.query(queryUpdateTable, [tableId], (error, results, fields) => {
+            if (error) {
+              console.log(error);
+              res.status(500).send('Error al cambiar el estado de la mesa');
+            }
+          });
+        });
+
+        // Convertir la fecha al formato adecuado
+        const dateStr = req.body.date;
+        const [day, month, year] = dateStr.split('/');
+        const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+
+        // Insertar la reserva en la base de datos
+        const query = `INSERT INTO reservas (fecha, mesa_id, cliente_email) VALUES (STR_TO_DATE(?, '%Y-%m-%d'), ?, ?)`;
+        reserve.tableIds.forEach(tableId => {
+          db.query(query, [formattedDate, tableId, reserve.clientemail], (error, results, fields) => {
+            if (error) {
+              console.log(error);
+              res.status(500).send('Error al insertar la reserva');
+            }
+          });
+        });
+
+        res.status(200).send('Reserva creada correctamente');
+      }
+    });
   } catch (error) {
     console.log(error);
+    res.status(500).send('Error al obtener el email del cliente');
   }
 };
 
@@ -83,3 +122,7 @@ exports.listReserveAll = async (req, res) => {
     console.log("Error tabla de reservas");
   }
 };
+
+
+
+ 

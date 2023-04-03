@@ -4,7 +4,7 @@ const authController = require("../controllers/authController");
 const mainController = require("../controllers/mainController");
 
 //Rutas de las vistas de la aplicacion
-router.get("/", authController.createTablesDB , (req, res) => {
+router.get("/" , (req, res) => {
   res.render("login", {alert1:0, alert2:0, alert3:0});
 });
 router.get("/login", (req, res) => {
@@ -36,6 +36,8 @@ router.post('/login', authController.login);
 router.post('/settings', authController.change_password);
 router.get('/logout', authController.logout);
 router.post("/table-room", mainController.createReserve);
+
+
 
 //exportamos los modulos
 module.exports = router;

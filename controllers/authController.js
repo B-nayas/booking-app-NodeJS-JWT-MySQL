@@ -192,13 +192,13 @@ exports.index = (req, res) => {
 };
 
 //Creamos la tabla de usuarios y reservas la primera vez que visitamos la pagina principal
-exports.createTablesDB = (req, res, next) => {
-  db.query("CREATE TABLE IF NOT EXISTS users (email VARCHAR(100) PRIMARY KEY, name VARCHAR(100), lastname VARCHAR(100), password VARCHAR(100), admin tinyint DEFAULT 0) ENGINE=INNODB;");
-  db.query(
-    "CREATE TABLE IF NOT EXISTS reservedtables (email VARCHAR(100) PRIMARY KEY, day010622 VARCHAR(100), day020622 VARCHAR(100), day030622 VARCHAR(100), day040622 VARCHAR(100)) ENGINE = INNODB;"
-  );
-  db.query("CREATE TABLE IF NOT EXISTS employees (id VARCHAR(100) PRIMARY KEY, password VARCHAR(100)) ENGINE = INNODB;");
-  return next();
-};
+// exports.createTablesDB = (req, res, next) => {
+//   db.query("CREATE TABLE IF NOT EXISTS users (email VARCHAR(100) PRIMARY KEY, name VARCHAR(100), lastname VARCHAR(100), password VARCHAR(100), admin tinyint DEFAULT 0) ENGINE=INNODB;");
+//   db.query(
+//     "CREATE TABLE IF NOT EXISTS reservedtables (email VARCHAR(100) PRIMARY KEY, day010622 VARCHAR(100), day020622 VARCHAR(100), day030622 VARCHAR(100), day040622 VARCHAR(100)) ENGINE = INNODB;"
+//   );
+//   db.query("CREATE TABLE IF NOT EXISTS employees (id VARCHAR(100) PRIMARY KEY, password VARCHAR(100)) ENGINE = INNODB;");
+//   return next();
+// };
 
 
