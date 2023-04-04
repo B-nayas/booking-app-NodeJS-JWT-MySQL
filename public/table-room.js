@@ -2,22 +2,24 @@
   const selectedTableIds = []; // Array para almacenar los IDs de las mesas seleccionadas
 
 
-// Seleccionar las mesas al hacer clic en ellas
-tables.forEach(table => {
-  table.addEventListener('click', event => {
-    const img = event.target.closest('img'); // Obtener la imagen dentro del div
-    if (img) {
-      const tableId = img.closest('.table').getAttribute('id'); // Obtener el ID de la mesa seleccionada
-      if (selectedTableIds.includes(tableId)) {
-        selectedTableIds.splice(selectedTableIds.indexOf(tableId), 1); // Quitar el ID de la mesa seleccionada del array
-      } else {
-        selectedTableIds.push(tableId); // Añadir el ID de la mesa seleccionada al array
-      }
-      img.closest('.table').classList.toggle("selected"); // Marcar la mesa como seleccionada en la interfaz
-      console.log(selectedTableIds); // Agregar un console.log para verificar el contenido de selectedTableIds
-    }
-  });
-});
+  
+    // Seleccionar las mesas al hacer clic en ellas
+    tables.forEach(table => {
+      table.addEventListener('click', event => {
+        const img = event.target.closest('img'); // Obtener la imagen dentro del div
+        if (img) {
+          const tableId = img.closest('.table').getAttribute('id'); // Obtener el ID de la mesa seleccionada
+          if (selectedTableIds.includes(tableId)) {
+            selectedTableIds.splice(selectedTableIds.indexOf(tableId), 1); // Quitar el ID de la mesa seleccionada del array
+          } else {
+            selectedTableIds.push(tableId); // Añadir el ID de la mesa seleccionada al array
+          }
+          img.closest('.table').classList.toggle("selected"); // Marcar la mesa como seleccionada en la interfaz
+          console.log(selectedTableIds); // Agregar un console.log para verificar el contenido de selectedTableIds
+        }
+      });
+    });
+  
 
   // Método para guardar las reservas pasándolas mediante POST al backend
   function handleReserve() {
@@ -67,3 +69,21 @@ tables.forEach(table => {
     option.textContent = `${day}/${month}/${year}`;
     select.appendChild(option);
   } 
+
+  fetch('/occupied-tables')
+  .then(response => {
+    console.log(response);
+    return response.json();
+  })
+  .then(data => {
+    if (typeof data === 'object') {
+      console.log('La respuesta es un objeto JSON');
+      console.log(data);
+    } else {
+      console.log('La respuesta no es un objeto JSON, es probable que sea HTML');
+      console.log(data);
+    }
+  })
+  .catch(error => console.error(error));
+
+

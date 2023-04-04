@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { CLIENT_RENEG_WINDOW } = require("tls");
 const { promisify } = require("util");
 
-// Método para crear las reservas de usuarios
+//Método para creación de reservas
 exports.createReserve = async (req, res) => {
   const email = await promisify(jwt.verify)(
     req.cookies.jwt,
@@ -26,35 +26,47 @@ exports.createReserve = async (req, res) => {
         res.status(404).send('Cliente no encontrado');
       } else {
         reserve.clientemail = results[0].email;
-        
-        // Cambiar el estado de cada mesa a "ocupada"
-        reserve.tableIds.forEach(tableId => {
-          const queryUpdateTable = `UPDATE mesas SET estado = 'ocupada' WHERE id = ?`;
-          db.query(queryUpdateTable, [tableId], (error, results, fields) => {
-            if (error) {
-              console.log(error);
-              res.status(500).send('Error al cambiar el estado de la mesa');
-            }
-          });
-        });
 
         // Convertir la fecha al formato adecuado
         const dateStr = req.body.date;
         const [day, month, year] = dateStr.split('/');
         const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
-        // Insertar la reserva en la base de datos
-        const query = `INSERT INTO reservas (fecha, mesa_id, cliente_email) VALUES (STR_TO_DATE(?, '%Y-%m-%d'), ?, ?)`;
-        reserve.tableIds.forEach(tableId => {
-          db.query(query, [formattedDate, tableId, reserve.clientemail], (error, results, fields) => {
-            if (error) {
-              console.log(error);
-              res.status(500).send('Error al insertar la reserva');
-            }
-          });
-        });
+        // Comprobar si hay reservas existentes en la misma fecha y mesa
+        const queryCheckReserve = `SELECT * FROM reservas WHERE fecha = STR_TO_DATE(?, '%Y-%m-%d') AND mesa_id IN (?)`;
+        db.query(queryCheckReserve, [formattedDate, reserve.tableIds], (error, results, fields) => {
+          if (error) {
+            console.log(error);
+            res.status(500).send('Error al comprobar la reserva');
+          } else if (results.length > 0) {
+            console.log('ERROR: Ya existe una reserva en la misma fecha y mesa');
+            res.status(400).send('ERROR: Ya existe una reserva en la misma fecha y mesa');
+          } else {
+            // Cambiar el estado de cada mesa a "ocupada" si no hay reservas
+            reserve.tableIds.forEach(tableId => {
+              const queryUpdateTable = `UPDATE mesas SET estado = 'ocupada' WHERE id = ?`;
+              db.query(queryUpdateTable, [tableId], (error, results, fields) => {
+                if (error) {
+                  console.log(error);
+                  res.status(500).send('Error al cambiar el estado de la mesa');
+                }
+              });
+            });
 
-        res.status(200).send('Reserva creada correctamente');
+            // Insertar la reserva en la base de datos
+            const queryInsertReserve = `INSERT INTO reservas (fecha, mesa_id, cliente_email) VALUES (STR_TO_DATE(?, '%Y-%m-%d'), ?, ?)`;
+            reserve.tableIds.forEach(tableId => {
+              db.query(queryInsertReserve, [formattedDate, tableId, reserve.clientemail], (error, results, fields) => {
+                if (error) {
+                  console.log(error);
+                  res.status(500).send('Error al insertar la reserva');
+                }
+              });
+            });
+
+            res.status(200).send('Reserva creada correctamente');
+          }
+        });
       }
     });
   } catch (error) {
@@ -123,6 +135,45 @@ exports.listReserveAll = async (req, res) => {
   }
 };
 
+// exports.queryCheckReserve = async (req, res) => {
+//   const query = `SELECT * FROM mesas`;
+//   db.query(query, (error, results, fields) => {
+//     if (error) {
+//       console.log(error);
+//       res.status(500).send("Error al obtener las mesas");
+//     } else {
+//       // Agregar la propiedad "state" al objeto que se enviará al frontend
+//       const tables = results.map((table) => ({
+//         id: table.id,
+//         name: table.nombre,
+//         state: table.estado, // Agregar la propiedad "state"
+//       }));
+//       res.render("table-room", { tables });
+//     }
+//   });
+// };
 
 
- 
+exports.getOccupiedTables = async (req, res) => {
+  try {
+    const query = "SELECT id FROM mesas WHERE estado = 'ocupada'";
+    const rows = await new Promise((resolve, reject) => {
+      db.query(query, (error, results, fields) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+    const occupiedTables = rows.map(table => ({id: table.id}));
+    res.header("Content-Type",'application/json');
+    res.json(occupiedTables);
+    console.log(occupiedTables);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
+
+
