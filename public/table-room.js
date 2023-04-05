@@ -31,7 +31,7 @@
       alert("Debe seleccionar al menos una mesa para hacer la reserva.");
       return;
     }
-    fetch("http://localhost:3000/table-room", {
+    fetch('/table-room', {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -68,8 +68,33 @@
     option.value = `${day}/${month}/${year}`;
     option.textContent = `${day}/${month}/${year}`;
     select.appendChild(option);
-  } 
+  }
 
+  
+  select.addEventListener("change", () => {
+    if (select.value === "") {
+      // Si no se selecciona ninguna fecha, seleccionamos la primera
+      select.value = select.options[0].value;
+      console.log(select.value);
+    }
+    const date = select.value;
+    console.log(date);
+    // Enviar la fecha al backend utilizando fetch()
+    fetch('/get-occupied-tables', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ date: date })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  });
   fetch('/occupied-tables')
   .then(response => {
     console.log(response);
@@ -79,11 +104,18 @@
     if (typeof data === 'object') {
       console.log('La respuesta es un objeto JSON');
       console.log(data);
+      data.forEach(table => {
+        const tableEl = document.getElementById(table.id);
+        if (tableEl) {
+          tableEl.classList.toggle('busy');
+        }
+      });
     } else {
       console.log('La respuesta no es un objeto JSON, es probable que sea HTML');
       console.log(data);
     }
   })
   .catch(error => console.error(error));
+
 
 

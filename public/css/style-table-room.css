@@ -144,9 +144,12 @@ nav {
     brightness(101%) contrast(93%);
 }
 
+.table.busy {
+  pointer-events: none;
+}
+
 .table.busy img {
   filter: brightness(0) invert(30%) sepia(100%) saturate(10000%);
-
 }
 
 .room {
