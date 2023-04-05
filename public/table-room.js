@@ -70,7 +70,7 @@
     select.appendChild(option);
   }
 
-  
+
 // Método para obtener las mesas ocupadas de la fecha seleccionada
 function getOccupiedTables() {
   const date = document.getElementById("date").value;
