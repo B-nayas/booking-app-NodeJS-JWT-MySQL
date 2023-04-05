@@ -3,6 +3,9 @@ const router = express.Router();
 const authController = require("../controllers/authController");
 const mainController = require("../controllers/mainController");
 
+// Habilitar la lectura de solicitudes en formato JSON
+router.use(express.json());
+
 //Rutas de las vistas de la aplicacion
 router.get("/" , (req, res) => {
   res.render("login", {alert1:0, alert2:0, alert3:0});
@@ -36,7 +39,6 @@ router.post('/login', authController.login);
 router.post('/settings', authController.change_password);
 router.get('/logout', authController.logout);
 router.post("/table-room", mainController.createReserve);
-router.get('/occupied-tables', mainController.getOccupiedTables);
 router.post("/get-occupied-tables", mainController.getOccupiedTables);
 
 

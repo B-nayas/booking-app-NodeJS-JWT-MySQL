@@ -15,7 +15,7 @@ exports.createReserve = async (req, res) => {
     tableIds: req.body.tableIds,
     date: req.body.date,
   };
-  console.log('Reserva: ', reserve);
+  console.log('mainController Reserva: ', reserve);
   try {
     // Obtener el ID del cliente que realiza la reserva
     db.query(clientIdQuery, [email.email], (error, results, fields) => {
@@ -39,7 +39,7 @@ exports.createReserve = async (req, res) => {
             console.log(error);
             res.status(500).send('Error al comprobar la reserva');
           } else if (results.length > 0) {
-            console.log('ERROR: Ya existe una reserva en la misma fecha y mesa');
+            console.log('mainController ERROR: Ya existe una reserva en la misma fecha y mesa');
             res.status(400).send('ERROR: Ya existe una reserva en la misma fecha y mesa');
           } else {
             // Insertar la reserva en la base de datos
@@ -150,14 +150,14 @@ exports.getOccupiedTables = async (req, res) => {
   try {
     // Convertir la fecha al formato adecuado
     const dateStr = req.body.date;
-    console.log(dateStr);
+    console.log('mainController: ' + dateStr);
     const [day, month, year] = dateStr.split('/');
     const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
     // Comprobar si hay reservas existentes en la misma fecha y mesa
-    const queryCheckReserve = `SELECT mesa_id FROM reservas WHERE fecha = STR_TO_DATE(?, '%Y-%m-%d') AND mesa_id IN (?)`;
+    const queryCheckReserve = `SELECT mesa_id FROM reservas WHERE fecha = ?`;
     const rows = await new Promise((resolve, reject) => {
-      db.query(queryCheckReserve, [formattedDate, reserve.tableIds], (error, results, fields) => {
+      db.query(queryCheckReserve, [formattedDate], (error, results, fields) => {
         if (error) {
           reject(error);
         } else {
@@ -168,10 +168,9 @@ exports.getOccupiedTables = async (req, res) => {
     const occupiedTables = rows.map(reservation => ({id: reservation.mesa_id}));
     res.header("Content-Type",'application/json');
     res.json(occupiedTables);
-    console.log(occupiedTables);
+    console.log('mainController:', JSON.stringify(occupiedTables));
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 };
-

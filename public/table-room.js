@@ -71,51 +71,58 @@
   }
 
   
-  select.addEventListener("change", () => {
-    if (select.value === "") {
-      // Si no se selecciona ninguna fecha, seleccionamos la primera
-      select.value = select.options[0].value;
-      console.log(select.value);
-    }
-    const date = select.value;
-    console.log(date);
-    // Enviar la fecha al backend utilizando fetch()
-    fetch('/get-occupied-tables', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ date: date })
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  });
-  fetch('/occupied-tables')
-  .then(response => {
-    console.log(response);
-    return response.json();
+// Método para obtener las mesas ocupadas de la fecha seleccionada
+function getOccupiedTables() {
+  const date = document.getElementById("date").value;
+  const images = document.querySelectorAll(".table img");
+  const tableIds = Array.from(images).map(img => parseInt(img.closest('.table').getAttribute('id')));
+  console.log("tableIds:", tableIds); // agregar para depurar
+  fetch("/get-occupied-tables", {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({
+      date: date,
+      tableIds: tableIds.filter(id => !isNaN(id)),
+    }),
   })
-  .then(data => {
-    if (typeof data === 'object') {
-      console.log('La respuesta es un objeto JSON');
-      console.log(data);
-      data.forEach(table => {
-        const tableEl = document.getElementById(table.id);
-        if (tableEl) {
-          tableEl.classList.toggle('busy');
-        }
+  .then(function (res) {
+    return res.json();
+  })
+  .then(function (occupiedTables) {
+    console.log("occupiedTables:", occupiedTables);
+    tables.forEach((table) => {
+      const tableId = parseInt(table.id);
+      console.log("tableId:", tableId);
+      const occupiedTable = occupiedTables.find((occupiedTable) => {
+        console.log("occupiedTable:", occupiedTable);
+        return occupiedTable && occupiedTable.id === tableId;
       });
-    } else {
-      console.log('La respuesta no es un objeto JSON, es probable que sea HTML');
-      console.log(data);
-    }
-  })
-  .catch(error => console.error(error));
+      console.log("occupiedTable:", occupiedTable);
+      if (occupiedTable) {
+        table.classList.add("busy");
+      } else {
+        table.classList.remove("busy");
+      } 
+    });
+  })  
+  .catch(function (res) {
+    console.log(res.body);
+  }, function(error) {
+    console.log(error);
+  });
+}
 
 
+
+  
+  // Llamar al método para obtener las mesas ocupadas al cargar la página
+  getOccupiedTables();
+  
+  // Agregar el evento "change" al select de fecha para obtener las mesas ocupadas al cambiar la fecha
+  select.addEventListener("change", () => {
+  getOccupiedTables();
+  });
 
