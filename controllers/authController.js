@@ -191,14 +191,61 @@ exports.index = (req, res) => {
   return res.redirect("index");
 };
 
-//Creamos la tabla de usuarios y reservas la primera vez que visitamos la pagina principal
-// exports.createTablesDB = (req, res, next) => {
-//   db.query("CREATE TABLE IF NOT EXISTS users (email VARCHAR(100) PRIMARY KEY, name VARCHAR(100), lastname VARCHAR(100), password VARCHAR(100), admin tinyint DEFAULT 0) ENGINE=INNODB;");
-//   db.query(
-//     "CREATE TABLE IF NOT EXISTS reservedtables (email VARCHAR(100) PRIMARY KEY, day010622 VARCHAR(100), day020622 VARCHAR(100), day030622 VARCHAR(100), day040622 VARCHAR(100)) ENGINE = INNODB;"
-//   );
-//   db.query("CREATE TABLE IF NOT EXISTS employees (id VARCHAR(100) PRIMARY KEY, password VARCHAR(100)) ENGINE = INNODB;");
-//   return next();
-// };
+// Creamos la tabla de usuarios y reservas la primera vez que visitamos la pagina principal
+exports.createTablesDB = (req, res, next) => {
+  const clientes = `
+  CREATE TABLE IF NOT EXISTS clientes (
+    email VARCHAR(100) NOT NULL,
+    name VARCHAR(100) DEFAULT NULL,
+    lastname VARCHAR(100) DEFAULT NULL,
+    password VARCHAR(100) DEFAULT NULL,
+    admin TINYINT DEFAULT '0',
+    PRIMARY KEY (email)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+`;
+  db.query(clientes, (error, results, fields) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log("Tabla clientes creada o ya existente.");
+    }
+  });
+  const mesas = `
+  CREATE TABLE IF NOT EXISTS mesas (
+    id INT NOT NULL,
+    capacidad INT NOT NULL,
+    estado SET('libre', 'ocupada') NOT NULL,
+    PRIMARY KEY (id)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+`;
+  db.query(mesas, (error, results, fields) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log("Tabla mesas creada o ya existente.");
+    }
+  });
+  const reservas = `
+  CREATE TABLE IF NOT EXISTS reservas (
+    id INT NOT NULL AUTO_INCREMENT,
+    fecha DATE NOT NULL,
+    mesa_id INT NOT NULL,
+    cliente_email VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id),
+    KEY mesa_id (mesa_id),
+    KEY cliente_email (cliente_email),
+    CONSTRAINT reservas_ibfk_1 FOREIGN KEY (mesa_id) REFERENCES mesas(id),
+    CONSTRAINT reservas_ibfk_2 FOREIGN KEY (cliente_email) REFERENCES clientes(email)
+  ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+`;
+  db.query(reservas, (error, results, fields) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log("Tabla reservas creada o ya existente.");
+    }
+  });
+  return next();
+};
 
 

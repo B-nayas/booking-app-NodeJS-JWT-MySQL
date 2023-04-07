@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="/resources/css/style-table-room.css" />
     <title>Show Food</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="stylesheet" href="/resources/bootstrap4.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/resources/bootstrap-select/css/bootstrap-select.css">
+    <link rel="stylesheet" href="/resources/css/style-table-room.css" />
   </head>
 
   <body>
@@ -45,7 +48,7 @@
 
       <div class="date">
         <label for="date">ELIGA UN DÍA :</label>
-        <select class="date_select" name="date" id="date"></select>
+        <select class="selectpicker" name="date" id="date" data-style="btn-primary"></select>
       </div>
 
 
@@ -158,6 +161,9 @@
       </div>
     </div>
 
-    <script src="resources/table-room.js"></script>
+    <script src="/resources/jquery/jquery.js"></script> 
+    <script src="/resources/bootstrap4.6/js/bootstrap.bundle.min.js"></script>
+    <script src="/resources/bootstrap-select/js/bootstrap-select.js"></script>
+    <script type="module" src="resources/table-room.js"></script>
   </body>
 </html>

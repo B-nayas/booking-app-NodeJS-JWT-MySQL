@@ -32,6 +32,9 @@ router.get("/settings",  authController.isAuthenticated, (req, res) => {
   res.render("settings", {alert7:0});
 });
 
+router.get("/prueba",  (req, res) => {
+  res.render("prueba");
+});
  
 //Ruta para los métodos de la aplicación
 router.post('/register', authController.register);
