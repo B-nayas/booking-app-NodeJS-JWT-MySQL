@@ -48,8 +48,7 @@
       }, function(error) {
         console.log(error);
       });
-      window.location.href = "/appointments";
-  }
+  } 
 
   // Método para la fecha. Obtenemos el select, el día actual y definimos la cantidad de días a añadir
   const select = document.getElementById("date");

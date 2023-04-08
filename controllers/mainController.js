@@ -43,9 +43,10 @@ exports.createReserve = async (req, res) => {
             res.status(400).send('ERROR: Ya existe una reserva en la misma fecha y mesa');
           } else {
             // Insertar la reserva en la base de datos
-            const queryInsertReserve = `INSERT INTO reservas (fecha, mesa_id, cliente_email) VALUES (STR_TO_DATE(?, '%Y-%m-%d'), ?, ?)`;
+            const queryInsertReserve = `
+            INSERT INTO reservas (fecha, mesa_id, cliente_email, capacidad) SELECT STR_TO_DATE(?, '%Y-%m-%d'), ?, ?, mesas.capacidad FROM mesas WHERE mesas.id = ?`;
             reserve.tableIds.forEach(tableId => {
-              db.query(queryInsertReserve, [formattedDate, tableId, reserve.clientemail], (error, results, fields) => {
+              db.query(queryInsertReserve, [formattedDate, tableId, reserve.clientemail, tableId], (error, results, fields) => {
                 if (error) {
                   console.log(error);
                   res.status(500).send('Error al insertar la reserva');
@@ -110,7 +111,7 @@ exports.listReserve = async (req, res) => {
     console.log("Error tabla de reservas");
   }
 };
- 
+  
 //Método para listar las reservas totales vistas por el administrador
 exports.listReserveAll = async (req, res) => {
   try {
