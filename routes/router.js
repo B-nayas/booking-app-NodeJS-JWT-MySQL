@@ -10,9 +10,6 @@ router.use(express.json());
 router.get("/" , (req, res) => {
   res.render("login", {alert1:0, alert2:0, alert3:0});
 });
-router.get("/login", (req, res) => {
-  res.render("login", {alert1:0, alert2:0, alert3:0});
-});
 router.get("/register", (req, res) => {
   res.render("register", {alert4:0, alert5:0, alert6:0, alert7:0});
 });
@@ -38,7 +35,7 @@ router.get("/prueba",  (req, res) => {
  
 //Ruta para los métodos de la aplicación
 router.post('/register', authController.register);
-router.post('/login', authController.login);
+router.post('/', authController.login);
 router.post('/settings', authController.change_password);
 router.get('/logout', authController.logout);
 router.post("/table-room", mainController.createReserve);

@@ -17,7 +17,7 @@
                <span>Bienvenido a ShowFood</span>
             </div>
             <div class="login_fields">
-               <form action="/login" method="POST">
+               <form action="/" method="POST">
                   <div class="login_fields_user">
                      <div class="icon">
                         <img src="/resources/css/images/usericon.png" width="19px" height="19px " />
@@ -52,7 +52,7 @@
       <script>
          document.getElementById("error-message").innerHTML = "Debe completar todos los campos para iniciar sesión.";
          document.getElementById("error-message").addEventListener("click", function () {
-           window.location.href = "/login";
+           window.location.href = "/";
          });
       </script>
       <% } %>
@@ -60,7 +60,7 @@
       <script>
          document.getElementById("error-message").innerHTML = "Usuario/Contraseña incorrecta.";
          document.getElementById("error-message").addEventListener("click", function () {
-           window.location.href = "/login";
+           window.location.href = "/";
          });
       </script>
       <% } %>

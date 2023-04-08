@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
       console.log("Error, debe ser mayor de edad para registrarse.");
     } else {
       db.query(
-        "INSERT INTO users SET ?",
+        "INSERT INTO clientes SET ?",
         {
           email: register_email,
           name: register_name,
@@ -40,18 +40,13 @@ exports.register = async (req, res) => {
           }
         }
       );
-      db.query("INSERT INTO reservedtables SET email = ?", [register_email], (error, results) => {
-        if (error) {
-          console.log("Error tabla de reserva de días.");
-        }
-      });
     }
   } catch (error) {
     console.log(error);
     console.log("Error de entrada de datos.");
   }
 };
-
+ 
 //Método para el login
 exports.login = async (req, res) => {
   try {
@@ -61,7 +56,7 @@ exports.login = async (req, res) => {
       res.render("login", { alert1: 1, alert2: 0, alert3: 0 });
       console.log("Error de entrada de datos en el login. Campos vacíos.");
     } else {
-      db.query("SELECT * FROM users WHERE email = ?", [email], async (error, results) => {
+      db.query("SELECT * FROM clientes WHERE email = ?", [email], async (error, results) => {
         if (results.length <= 0) {
           const id = req.body.login_email;
           const pass = req.body.login_pass;
@@ -79,7 +74,7 @@ exports.login = async (req, res) => {
                 httpOnly: true,
               };
               res.cookie("jwt", token, cookieOptions);
-              db.query("SELECT * FROM reservedtables", (error, results) => {
+              db.query("SELECT * FROM reservas", (error, results) => {
                 res.render("admin", {
                   results: results,
                 });
@@ -102,7 +97,7 @@ exports.login = async (req, res) => {
           };
 
           res.cookie("jwt", token, cookieOptions);
-          res.render("table-room", { alert1: 0, alert2: 0, alert3: 1 });
+          res.redirect('/table-room');
           console.log("Login de usuario correcto.");
         }
       });
@@ -117,7 +112,7 @@ exports.isAuthenticated = async (req, res, next) => {
   if (req.cookies.jwt) {
     try {
       const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-      db.query("SELECT * FROM users WHERE email = ?", [decoded.email], (error, results) => {
+      db.query("SELECT * FROM clientes WHERE email = ?", [decoded.email], (error, results) => {
         if (results) {
           // console.log(JSON.stringify(results));
           req.admin = results[0];
@@ -129,7 +124,7 @@ exports.isAuthenticated = async (req, res, next) => {
       return next();
     }
   } else {
-    res.redirect("/login");
+    res.redirect("/");
   }
 };
 
@@ -150,7 +145,7 @@ exports.isAdmin = async (req, res, next) => {
       return next();
     }
   } else {
-    res.redirect("/login");
+    res.redirect("/");
   }
 };
 
@@ -165,7 +160,7 @@ exports.change_password = async (req, res) => {
       res.render("settings", { alert7: 1 });
       console.log("Debe completar campo de contraseña.");
     } else {
-      db.query("UPDATE users SET password = ? WHERE email = ?", [change_passencrypt, decoded.email], (error, results) => {
+      db.query("UPDATE clientes SET password = ? WHERE email = ?", [change_passencrypt, decoded.email], (error, results) => {
         if (error) {
           res.render("settings", { alert7: 0 });
           console.log("ERROR.");
@@ -184,11 +179,6 @@ exports.change_password = async (req, res) => {
 exports.logout = (req, res) => {
   res.clearCookie("jwt");
   return res.redirect("/");
-};
-
-//Método para la página de inicio
-exports.index = (req, res) => {
-  return res.redirect("index");
 };
 
 // Creamos la tabla de usuarios y reservas la primera vez que visitamos la pagina principal

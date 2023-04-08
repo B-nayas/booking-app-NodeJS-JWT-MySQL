@@ -110,7 +110,7 @@ exports.listReserve = async (req, res) => {
     console.log("Error tabla de reservas");
   }
 };
-
+ 
 //Método para listar las reservas totales vistas por el administrador
 exports.listReserveAll = async (req, res) => {
   try {
@@ -123,28 +123,6 @@ exports.listReserveAll = async (req, res) => {
     console.log("Error tabla de reservas");
   }
 };
-
-// exports.getOccupiedTables = async (req, res) => {
-//   try {
-//     const query = "SELECT id FROM mesas WHERE estado = 'ocupada'";
-//     const rows = await new Promise((resolve, reject) => {
-//       db.query(query, (error, results, fields) => {
-//         if (error) {
-//           reject(error);
-//         } else {
-//           resolve(results);
-//         }
-//       });
-//     });
-//     const occupiedTables = rows.map(table => ({id: table.id}));
-//     res.header("Content-Type",'application/json');
-//     res.json(occupiedTables);
-//     console.log(occupiedTables);
-//   } catch (error) {
-//     console.log(error);
-//     res.sendStatus(500);
-//   }
-// };
 
 exports.getOccupiedTables = async (req, res) => {
   try {
