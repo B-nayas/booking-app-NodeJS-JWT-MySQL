@@ -66,47 +66,25 @@ exports.createReserve = async (req, res) => {
 };
 
 //Método para listar las reservas que tiene un usuario
-exports.listReserve = async (req, res) => {
+exports.listReserveUser = async (req, res) => {
   try {
     const decoded = await promisify(jwt.verify)(
       req.cookies.jwt,
       process.env.JWT_SECRET
     );
+    const rows = await new Promise((resolve, reject) => {
     db.query(
-      "SELECT day010622 FROM reservedtables WHERE email = ?",
+      "SELECT fecha, mesa_id, capacidad FROM reservas WHERE cliente_email = ?",
       [decoded.email],
       (error, results) => {
-        var aresults = results[0].day010622;
-        db.query(
-          "SELECT day020622 FROM reservedtables WHERE email = ?",
-          [decoded.email],
-          (error, results) => {
-            var bresults = results[0].day020622;
-            db.query(
-              "SELECT day030622 FROM reservedtables WHERE email = ?",
-              [decoded.email],
-              (error, results) => {
-                var cresults = results[0].day030622;
-                db.query(
-                  "SELECT day040622 FROM reservedtables WHERE email = ?",
-                  [decoded.email],
-                  (error, results) => {
-                    var dresults = results[0].day040622;
-                    res.render("appointments", {
-                      email: decoded.email,
-                      day1: aresults,
-                      day2: bresults,
-                      day3: cresults,
-                      day4: dresults,
-                    });
-                  }
-                );
-              }
-            );
-          }
-        );
+        resolve(results);
       }
     );
+    });
+    const listreserves = rows.map(list => ({ fecha: list.fecha, id: list.mesa_id, capacidad: list.capacidad }));
+    res.header("Content-Type",'application/json');
+    res.json(listreserves);
+    console.log(listreserves);
   } catch (error) {
     console.log("Error tabla de reservas");
   }
@@ -125,6 +103,7 @@ exports.listReserveAll = async (req, res) => {
   }
 };
 
+//Método para obtener las mesas que están ocupadas en una fecha determinada
 exports.getOccupiedTables = async (req, res) => {
   try {
     // Convertir la fecha al formato adecuado

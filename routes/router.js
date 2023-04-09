@@ -16,8 +16,8 @@ router.get("/register", (req, res) => {
 router.get("/table-room", authController.isAuthenticated, (req, res) => {
   res.render("table-room");
 });
-router.get("/appointments", authController.isAuthenticated, mainController.listReserve, (req, res) => {
-  res.render("appointments", {email: null, day1: null, day2: null, day3: null, day4: null});
+router.get("/appointments", authController.isAuthenticated, (req, res) => {
+  res.render("appointments");
 });
 router.get("/error-register", (req, res) => {
   res.render("error-register");
@@ -40,6 +40,7 @@ router.post('/settings', authController.change_password);
 router.get('/logout', authController.logout);
 router.post("/table-room", mainController.createReserve);
 router.post("/get-occupied-tables", mainController.getOccupiedTables);
+router.post("/listReserveUser", mainController.listReserveUser);
 
 
 //exportamos los modulos
