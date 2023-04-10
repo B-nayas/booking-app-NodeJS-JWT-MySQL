@@ -29,7 +29,7 @@ function reserveTable(data) {
     const cancelButton = document.createElement("button");
     cancelButton.classList.add("btn");
     cancelButton.classList.add("btn-danger");
-    cancelButton.textContent = "Cancelar";
+    cancelButton.textContent = "Cancelar reserva";
     cancelButton.addEventListener("click", function() {
       const xhr = new XMLHttpRequest();
       xhr.onload = function () {
