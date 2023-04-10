@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
       console.log("Error, debe ser mayor de edad para registrarse.");
     } else {
       db.query(
-        "INSERT INTO clientes SET ?",
+        "INSERT INTO usuarios SET ?",
         {
           email: register_email,
           name: register_name,
@@ -56,7 +56,7 @@ exports.login = async (req, res) => {
       res.render("login", { alert1: 1, alert2: 0, alert3: 0 });
       console.log("Error de entrada de datos en el login. Campos vacíos.");
     } else {
-      db.query("SELECT * FROM clientes WHERE email = ?", [email], async (error, results) => {
+      db.query("SELECT * FROM usuarios WHERE email = ?", [email], async (error, results) => {
         if (results.length <= 0) {
           const id = req.body.login_email;
           const pass = req.body.login_pass;
@@ -112,7 +112,7 @@ exports.isAuthenticated = async (req, res, next) => {
   if (req.cookies.jwt) {
     try {
       const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-      db.query("SELECT * FROM clientes WHERE email = ?", [decoded.email], (error, results) => {
+      db.query("SELECT * FROM usuarios WHERE email = ?", [decoded.email], (error, results) => {
         if (results) {
           // console.log(JSON.stringify(results));
           req.admin = results[0];
@@ -160,7 +160,7 @@ exports.change_password = async (req, res) => {
       res.render("settings", { alert7: 1 });
       console.log("Debe completar campo de contraseña.");
     } else {
-      db.query("UPDATE clientes SET password = ? WHERE email = ?", [change_passencrypt, decoded.email], (error, results) => {
+      db.query("UPDATE usuarios SET password = ? WHERE email = ?", [change_passencrypt, decoded.email], (error, results) => {
         if (error) {
           res.render("settings", { alert7: 0 });
           console.log("ERROR.");
@@ -183,8 +183,8 @@ exports.logout = (req, res) => {
 
 // Creamos la tabla de usuarios y reservas la primera vez que visitamos la pagina principal
 exports.createTablesDB = (req, res, next) => {
-  const clientes = `
-  CREATE TABLE IF NOT EXISTS clientes (
+  const usuarios = `
+  CREATE TABLE IF NOT EXISTS usuarios (
     email VARCHAR(100) NOT NULL,
     name VARCHAR(100) DEFAULT NULL,
     lastname VARCHAR(100) DEFAULT NULL,
@@ -193,11 +193,11 @@ exports.createTablesDB = (req, res, next) => {
     PRIMARY KEY (email)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 `;
-  db.query(clientes, (error, results, fields) => {
+  db.query(usuarios, (error, results, fields) => {
     if (error) {
       console.error(error);
     } else {
-      console.log("Tabla clientes creada o ya existente.");
+      console.log("Tabla usuarios creada o ya existente.");
     }
   });
   const mesas = `
@@ -225,7 +225,7 @@ exports.createTablesDB = (req, res, next) => {
     KEY mesa_id (mesa_id),
     KEY cliente_email (cliente_email),
     CONSTRAINT reservas_ibfk_1 FOREIGN KEY (mesa_id) REFERENCES mesas(id),
-    CONSTRAINT reservas_ibfk_2 FOREIGN KEY (cliente_email) REFERENCES clientes(email)
+    CONSTRAINT reservas_ibfk_2 FOREIGN KEY (cliente_email) REFERENCES usuarios(email)
   ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 `;
   db.query(reservas, (error, results, fields) => {

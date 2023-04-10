@@ -41,6 +41,8 @@ router.get('/logout', authController.logout);
 router.post("/table-room", mainController.createReserve);
 router.post("/get-occupied-tables", mainController.getOccupiedTables);
 router.post("/listReserveUser", mainController.listReserveUser);
+router.post("/cancelReserve", mainController.cancelReserve);
+
 
 
 //exportamos los modulos

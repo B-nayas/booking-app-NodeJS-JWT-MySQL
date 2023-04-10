@@ -9,7 +9,7 @@ exports.createReserve = async (req, res) => {
     req.cookies.jwt,
     process.env.JWT_SECRET
   );
-  const clientIdQuery = "SELECT email FROM clientes WHERE email = ?";
+  const clientIdQuery = "SELECT email FROM usuarios WHERE email = ?";
   const reserve = {
     clientemail: email,
     tableIds: req.body.tableIds,
@@ -108,7 +108,10 @@ exports.getOccupiedTables = async (req, res) => {
   try {
     // Convertir la fecha al formato adecuado
     const dateStr = req.body.date;
-    console.log('mainController: ' + dateStr);
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) {
+      console.log('Debe seleccionar una fecha.');
+    }else{
     const [day, month, year] = dateStr.split('/');
     const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
@@ -127,8 +130,36 @@ exports.getOccupiedTables = async (req, res) => {
     res.header("Content-Type",'application/json');
     res.json(occupiedTables);
     console.log('mainController:', JSON.stringify(occupiedTables));
+    }
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
+  }
+};
+
+exports.cancelReserve = async (req, res) => {
+  try {
+    const reservaId = req.body.reservaId;
+    const decoded = await promisify(jwt.verify)(
+      req.cookies.jwt,
+      process.env.JWT_SECRET
+    );
+    await new Promise((resolve, reject) => {
+      db.query(
+        "DELETE FROM reservas WHERE id = ? AND cliente_email = ?",
+        [reservaId, decoded.email],
+        (error, results) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
+    res.status(200).json({ message: "Reserva cancelada exitosamente" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error al cancelar la reserva" });
   }
 };
