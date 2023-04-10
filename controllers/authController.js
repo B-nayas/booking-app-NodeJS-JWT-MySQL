@@ -58,39 +58,36 @@ exports.login = async (req, res) => {
       return;
     }
 
-    const queryResult = await db.query("SELECT * FROM usuarios WHERE email = ?", [email]);
+    const sql = "SELECT password, admin FROM usuarios WHERE email = ?";
+    db.query(sql, [email], async (error, results) => {
+      const isAdmin = results[0].admin === 1;
+      const token = jwt.sign({ email: isAdmin ? "admin" : email }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_TIME_EXP,
+      });
+      const cookieOptions = {
+        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXP * 100000),
+        httpOnly: true,
+      };
+      res.cookie("jwt", token, cookieOptions);
 
-    if (!queryResult || !queryResult[0] || queryResult[0].length === 0 || !(await bcryptjs.compare(password, queryResult[0][0].password))) {
-      res.render("login", { alert1: 0, alert2: 1, alert3: 0 });
-      console.log("Contraseña/Usuario incorrectos.");
-      return;
-    }
-
-    const isAdmin = queryResult[0][0].admin === 1;
-    const id = queryResult[0][0].id;
-    const token = jwt.sign({ email: isAdmin ? "admin" : email }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_TIME_EXP,
+      if (!results || results.length == 0 || !(await bcryptjs.compare(password, results[0].password))) {
+        res.render("login", { alert1: 0, alert2: 1, alert3: 0 });
+        console.log("Contraseña/Usuario incorrectos.");
+      }
+      else if (isAdmin) {
+        res.render("admin");
+        console.log("Login de administrador correcto.");
+      } else {
+        res.redirect('/table-room');
+        console.log("Login de usuario correcto.");
+      }
     });
-
-    const cookieOptions = {
-      expires: new Date(Date.now() + process.env.JWT_COOKIE_EXP * 100000),
-      httpOnly: true,
-    };
-
-    res.cookie("jwt", token, cookieOptions);
-
-    if (isAdmin) {
-      res.render("admin");
-      console.log("Login de administrador correcto.");
-    } else {
-      res.redirect('/table-room');
-      console.log("Login de usuario correcto.");
-    }
   } catch (error) {
     console.log(error, "Error de entrada de datos.");
     res.render("login", { alert1: 0, alert2: 1, alert3: 0 });
   }
 };
+
 
 
 
