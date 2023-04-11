@@ -109,6 +109,7 @@ exports.getOccupiedTables = async (req, res) => {
     // Convertir la fecha al formato adecuado
     const dateStr = req.body.date;
     const date = new Date(dateStr);
+    console.log(date);
     if (isNaN(date.getTime())) {
       console.log('Debe seleccionar una fecha.');
     }else{
