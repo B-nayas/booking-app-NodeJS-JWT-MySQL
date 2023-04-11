@@ -33,6 +33,6 @@ app.use(function (req, res, next) {
 app.use("/", require("./routes/router"));
 
 //Puerto de la aplicacion en localhost
-app.listen(3001, function (req, res) {
+app.listen(3000, function (req, res) {
   console.log("SERVER UP - localhost:3000");
 });
