@@ -52,18 +52,17 @@
 
   // Método para la fecha. Obtenemos el select, el día actual y definimos la cantidad de días a añadir
   const select = document.getElementById("date");
-  const today = new Date();
-  const daysToAdd = 14;
-
+  const actualDate = new Date();
   // Iterar 14 días y agregarlos como opciones en el select
-  for (let i = 0; i < daysToAdd; i++) {
-    const dateToAdd = new Date(today.getTime() + i * 24 * 60 * 60 * 1000);
+  for (let i = 0; i < 14; i++) {
     const option = document.createElement("option");
-    const day = ('0' + dateToAdd.getDate()).slice(-2);
-    const month = ('0' + (dateToAdd.getMonth() + 1)).slice(-2);
-    const year = dateToAdd.getFullYear();
-    option.value = `${day}/${month}/${year}`;
-    option.textContent = `${day}/${month}/${year}`;
+    const date = new Date(actualDate.getTime() + i * 24 * 60 * 60 * 1000);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const fechaTexto = `${day}/${month}/${year}`;
+    option.value = fechaTexto;
+    option.textContent = fechaTexto;
     select.appendChild(option);
   }
 
@@ -71,6 +70,7 @@
   // Método para obtener las mesas ocupadas de la fecha seleccionada
   function getOccupiedTables() {
     const date = document.getElementById("date").value;
+    console.log(date);
     const images = document.querySelectorAll(".table img");
     const tableIds = Array.from(images).map(img => parseInt(img.closest('.table').getAttribute('id')));
     // console.log("tableIds:", tableIds); // agregar para depurar

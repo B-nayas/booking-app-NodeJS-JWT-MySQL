@@ -107,15 +107,16 @@ exports.listReserveAll = async (req, res) => {
 exports.getOccupiedTables = async (req, res) => {
   try {
     // Convertir la fecha al formato adecuado
-    const dateStr = req.body.date;
-    const date = new Date(dateStr);
-    console.log(date);
+    const dateParts = req.body.date.split('/');
+    const year = parseInt(dateParts[2]);
+    const monthIndex = parseInt(dateParts[1]) - 1;
+    const day = parseInt(dateParts[0]);
+    const date = new Date(year, monthIndex, day);
     if (isNaN(date.getTime())) {
       console.log('Debe seleccionar una fecha.');
-    }else{
-    const [day, month, year] = dateStr.split('/');
-    const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-
+    } 
+    else {
+    const formattedDate = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`; 
     // Comprobar si hay reservas existentes en la misma fecha y mesa
     const queryCheckReserve = `SELECT mesa_id FROM reservas WHERE fecha = ?`;
     const rows = await new Promise((resolve, reject) => {
@@ -130,8 +131,7 @@ exports.getOccupiedTables = async (req, res) => {
     const occupiedTables = rows.map(reservation => ({id: reservation.mesa_id}));
     res.header("Content-Type",'application/json');
     res.json(occupiedTables);
-    console.log('mainController:', JSON.stringify(occupiedTables));
-    }
+  }
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
