@@ -19,19 +19,13 @@ router.get("/table-room", authController.isAuthenticated, (req, res) => {
 router.get("/appointments", authController.isAuthenticated, (req, res) => {
   res.render("appointments");
 });
-router.get("/error-register", (req, res) => {
-  res.render("error-register");
-});
-router.get("/admin",  authController.isAdmin, mainController.listReserveAll,  (req, res) => {
-  res.render("admin", {results: null});
+router.get("/admin", authController.isAuthenticated, authController.isAdmin, (req, res) => {
+  res.render("admin");
 });
 router.get("/settings",  authController.isAuthenticated, (req, res) => {
   res.render("settings", {alert7:0});
 });
 
-router.get("/prueba",  (req, res) => {
-  res.render("prueba");
-});
  
 //Ruta para los métodos de la aplicación
 router.post('/register', authController.register);

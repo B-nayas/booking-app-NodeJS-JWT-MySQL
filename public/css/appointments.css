@@ -67,6 +67,11 @@ nav {
   margin-left: 25%;
 }
 
+.divtable {
+  max-height: 640px;
+  overflow-y: auto; 
+}
+
 tr, th {
   font-size: 20px;
   text-align: center;

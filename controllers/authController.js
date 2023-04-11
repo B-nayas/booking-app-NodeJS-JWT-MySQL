@@ -46,66 +46,49 @@ exports.register = async (req, res) => {
     console.log("Error de entrada de datos.");
   }
 };
- 
+
 //Método para el login
 exports.login = async (req, res) => {
   try {
     const email = req.body.login_email;
     const password = req.body.login_pass;
+
     if (!email || !password) {
       res.render("login", { alert1: 1, alert2: 0, alert3: 0 });
       console.log("Error de entrada de datos en el login. Campos vacíos.");
-    } else {
-      db.query("SELECT * FROM usuarios WHERE email = ?", [email], async (error, results) => {
-        if (results.length <= 0) {
-          const id = req.body.login_email;
-          const pass = req.body.login_pass;
-          db.query("SELECT * FROM employees WHERE id = ?", [id], async (error, results) => {
-            if (results.length == 0 || !(await bcryptjs.compare(pass, results[0].password))) {
-              res.render("login", { alert1: 0, alert2: 1, alert3: 0 });
-              console.log("Login de empleado incorrecto.");
-            } else {
-              const id = results[0].id;
-              const token = jwt.sign({ email: id }, process.env.JWT_SECRET, {
-                expiresIn: process.env.JWT_TIME_EXP,
-              });
-              const cookieOptions = {
-                expires: new Date(Date.now() + process.env.JWT_COOKIE_EXP * 100000),
-                httpOnly: true,
-              };
-              res.cookie("jwt", token, cookieOptions);
-              db.query("SELECT * FROM reservas", (error, results) => {
-                res.render("admin", {
-                  results: results,
-                });
-              });
-              console.log("Login de empleado correcto.");
-            }
-          });
-        } else if (results.length == 0 || !(await bcryptjs.compare(password, results[0].password))) {
-          res.render("login", { alert1: 0, alert2: 1, alert3: 0 });
-          console.log("Contraseña/Usuario incorrectos.");
-        } else {
-          const email = results[0].email;
-          const token = jwt.sign({ email: email }, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_TIME_EXP,
-          });
-
-          const cookieOptions = {
-            expires: new Date(Date.now() + process.env.JWT_COOKIE_EXP * 100000),
-            httpOnly: true,
-          };
-
-          res.cookie("jwt", token, cookieOptions);
-          res.redirect('/table-room');
-          console.log("Login de usuario correcto.");
-        }
-      });
+      return;
     }
+
+    const sql = "SELECT password, admin FROM usuarios WHERE email = ?";
+    db.query(sql, [email], async (error, results) => {
+      const isAdmin = results[0].admin === 1;
+      const token = jwt.sign({ email: isAdmin ? "admin" : email }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_TIME_EXP,
+      });
+      const cookieOptions = {
+        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXP * 100000),
+        httpOnly: true,
+      };
+      res.cookie("jwt", token, cookieOptions);
+
+      if (!results || results.length == 0 || !(await bcryptjs.compare(password, results[0].password))) {
+        res.render("login", { alert1: 0, alert2: 1, alert3: 0 });
+        console.log("Contraseña/Usuario incorrectos.");
+      }
+      else if (isAdmin) {
+        res.render("admin");
+        console.log("Login de administrador correcto.");
+      } else {
+        res.redirect('/table-room');
+        console.log("Login de usuario correcto.");
+      }
+    });
   } catch (error) {
     console.log(error, "Error de entrada de datos.");
+    res.render("login", { alert1: 0, alert2: 1, alert3: 0 });
   }
 };
+
 
 //Método para restringir acceso a usuarios no registrados
 exports.isAuthenticated = async (req, res, next) => {
@@ -133,11 +116,12 @@ exports.isAdmin = async (req, res, next) => {
   if (req.cookies.jwt) {
     try {
       const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-      db.query("SELECT * FROM employees WHERE email = ?", [decoded.email], (error, results) => {
-        if (results) {
-          return next();
+      db.query("SELECT name FROM usuarios WHERE email = ?", [decoded.email], (error, results) => {
+        console.log(results);
+        if (results[0].admin === 1) {
+          res.render("admin");
         } else {
-          res.redirect("table-room");
+          res.status(200).send();
         }
       });
     } catch (error) {

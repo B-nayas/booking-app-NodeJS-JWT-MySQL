@@ -5,10 +5,14 @@ function formatDate(date) {
   const year = d.getFullYear();
   const month = d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1;
   const day = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
-  return `${day}-${month}-${year}`;
+  return `${day}/${month}/${year}`;
 }
 
 function reserveTable(data) {
+  // Ordenar los datos por fecha ascendente
+  data.sort(function(a, b) {
+    return new Date(a.fecha) - new Date(b.fecha);
+  });
   tableBody.innerHTML = "";
   data.forEach((appointment) => {
     const row = document.createElement("tr");
@@ -29,8 +33,11 @@ function reserveTable(data) {
     const cancelButton = document.createElement("button");
     cancelButton.classList.add("btn");
     cancelButton.classList.add("btn-danger");
-    cancelButton.textContent = "Cancelar";
+    cancelButton.textContent = "Cancelar reserva";
     cancelButton.addEventListener("click", function() {
+      data = data.filter(function(item) {
+        return item.id !== appointment.id;
+      });      
       const xhr = new XMLHttpRequest();
       xhr.onload = function () {
         if (xhr.status === 200) {
