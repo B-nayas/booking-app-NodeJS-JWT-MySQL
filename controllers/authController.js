@@ -167,16 +167,14 @@ exports.logout = (req, res) => {
 
 // Creamos la tabla de usuarios y reservas la primera vez que visitamos la pagina principal
 exports.createTablesDB = (req, res, next) => {
-  const usuarios = `
-  CREATE TABLE IF NOT EXISTS usuarios (
+  const usuarios = `CREATE TABLE IF NOT EXISTS usuarios (
     email VARCHAR(100) NOT NULL,
     name VARCHAR(100) DEFAULT NULL,
     lastname VARCHAR(100) DEFAULT NULL,
     password VARCHAR(100) DEFAULT NULL,
     admin TINYINT DEFAULT '0',
     PRIMARY KEY (email)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-`;
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci`;
   db.query(usuarios, (error, results, fields) => {
     if (error) {
       console.error(error);
