@@ -84,7 +84,6 @@ exports.listReserveUser = async (req, res) => {
     const listreserves = rows.map(list => ({ fecha: list.fecha, id: list.mesa_id, capacidad: list.capacidad }));
     res.header("Content-Type",'application/json');
     res.json(listreserves);
-    console.log(listreserves);
   } catch (error) {
     console.log("Error tabla de reservas");
   }
@@ -93,15 +92,26 @@ exports.listReserveUser = async (req, res) => {
 //Método para listar las reservas totales vistas por el administrador
 exports.listReserveAll = async (req, res) => {
   try {
-    db.query("SELECT * FROM reservedtables", (error, results) => {
-      res.render("admin", {
-        results: results,
-      });
-    });
+    db.query('SELECT * FROM reservas', (error, result) => {
+      if (error) {
+        throw error;
+      } else {
+        const rows = Array.isArray(result) ? result : [];
+        const reservas = rows.map(list => ({
+          fecha: list.fecha,
+          id: list.mesa_id,
+          capacidad: list.capacidad,
+          email: list.cliente_email
+        }));
+        res.header("Content-Type", "application/json");
+        res.json(reservas);
+      }
+    });    
   } catch (error) {
-    console.log("Error tabla de reservas");
+    console.log("Error tabla de reservas", error);
   }
 };
+
 
 //Método para obtener las mesas que están ocupadas en una fecha determinada
 exports.getOccupiedTables = async (req, res) => {
@@ -112,11 +122,7 @@ exports.getOccupiedTables = async (req, res) => {
     const monthIndex = parseInt(dateParts[1]) - 1;
     const day = parseInt(dateParts[0]);
     const date = new Date(year, monthIndex, day);
-    if (isNaN(date.getTime())) {
-      console.log('Debe seleccionar una fecha.');
-    } 
-    else {
-    const formattedDate = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`; 
+    const formattedDate = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
     // Comprobar si hay reservas existentes en la misma fecha y mesa
     const queryCheckReserve = `SELECT mesa_id FROM reservas WHERE fecha = ?`;
     const rows = await new Promise((resolve, reject) => {
@@ -131,7 +137,6 @@ exports.getOccupiedTables = async (req, res) => {
     const occupiedTables = rows.map(reservation => ({id: reservation.mesa_id}));
     res.header("Content-Type",'application/json');
     res.json(occupiedTables);
-  }
   } catch (error) {
     console.log(error);
     res.sendStatus(500);

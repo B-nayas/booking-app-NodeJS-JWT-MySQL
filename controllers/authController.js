@@ -76,7 +76,7 @@ exports.login = async (req, res) => {
         console.log("Contraseña/Usuario incorrectos.");
       }
       else if (isAdmin) {
-        res.render("admin");
+        res.render('admin');
         console.log("Login de administrador correcto.");
       } else {
         res.redirect('/table-room');

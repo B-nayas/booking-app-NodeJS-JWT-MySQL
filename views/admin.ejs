@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Show Food</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="stylesheet" href="/resources/bootstrap4.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="/resources/css/admin.css" />
   </head>
 
@@ -23,11 +26,25 @@
       </div>
 
       <div class="appointments">
-        <h2>RESERVAS DE usuarios</h2>
-       
+        <h2>RESERVAS DE CLIENTES</h2>
+        <div class="divtable">
+          <table class="table table-dark" id="appointmentsTable">
+              <thead>
+                <tr >
+                  <th class="align-middle">Fecha</th>
+                  <th class="align-middle">Email cliente</th>
+                  <th class="align-middle">Número de personas</th>
+                  <th class="align-middle">Número de mesa</th>
+                  <th class="align-middle"></th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
       </div>
-    </div>
-
-    <script></script>
+      <script src="/resources/jquery/jquery.js"></script> 
+      <script src="/resources/bootstrap4.6/js/bootstrap.bundle.min.js"></script>
+      <script src="/resources/admin.js"></script>
   </body>
 </html>
