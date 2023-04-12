@@ -184,14 +184,11 @@ exports.createTablesDB = (req, res, next) => {
       console.log("Tabla usuarios creada o ya existente.");
     }
   });
-  const mesas = `
-  CREATE TABLE IF NOT EXISTS mesas (
+  const mesas = `CREATE TABLE IF NOT EXISTS mesas (
     id INT NOT NULL,
     capacidad INT NOT NULL,
-    estado SET('libre', 'ocupada') NOT NULL,
-    PRIMARY KEY (id)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-`;
+    PRIMARY KEY (id, capacidad)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;`;
   db.query(mesas, (error, results, fields) => {
     if (error) {
       console.error(error);
@@ -199,19 +196,20 @@ exports.createTablesDB = (req, res, next) => {
       console.log("Tabla mesas creada o ya existente.");
     }
   });
-  const reservas = `
-  CREATE TABLE IF NOT EXISTS reservas (
+  const reservas = `CREATE TABLE IF NOT EXISTS reservas (
     id INT NOT NULL AUTO_INCREMENT,
     fecha DATE NOT NULL,
     mesa_id INT NOT NULL,
+    capacidad INT NOT NULL,
     cliente_email VARCHAR(100) NOT NULL,
     PRIMARY KEY (id),
     KEY mesa_id (mesa_id),
     KEY cliente_email (cliente_email),
-    CONSTRAINT reservas_ibfk_1 FOREIGN KEY (mesa_id) REFERENCES mesas(id),
-    CONSTRAINT reservas_ibfk_2 FOREIGN KEY (cliente_email) REFERENCES usuarios(email)
-  ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-`;
+    KEY reservas_ibfk_3 (mesa_id, capacidad),
+    CONSTRAINT reservas_ibfk_1 FOREIGN KEY (mesa_id) REFERENCES mesas (id),
+    CONSTRAINT reservas_ibfk_2 FOREIGN KEY (cliente_email) REFERENCES usuarios (email),
+    CONSTRAINT reservas_ibfk_3 FOREIGN KEY (mesa_id, capacidad) REFERENCES mesas (id, capacidad)
+  ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci`;
   db.query(reservas, (error, results, fields) => {
     if (error) {
       console.error(error);
