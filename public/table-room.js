@@ -21,6 +21,7 @@
 
   // Método para guardar las reservas pasándolas mediante POST al backend
   function handleReserve() {
+    document.getElementById("confirmMessage").style.display = "block";
     const date = document.getElementById("date").value;
     const tableIds = selectedTableIds; // Obtener los IDs de las mesas reservadas
     console.log(date, tableIds);
